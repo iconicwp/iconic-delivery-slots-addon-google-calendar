@@ -81,10 +81,10 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$nonce = wp_create_nonce( 'wds-google-calendar-nonce' );
 		if ( self::is_connection_active() ) {
 			$url = self::get_redirect_url( 'disconnect', $nonce ) . '&_nonce=' . $nonce;
-			echo sprintf( 'Connected. <a href="%s" class="button">%s</a>', esc_attr( $url ), esc_html__( 'Disconnect', 'jckwds' ) );
+			echo sprintf( '<div class="iconic_wds_gcal_connected"><span>Connected.<span> <a href="%s" class="button iconic_wds_gcal_disconnect_btn">%s</a></div>', esc_attr( $url ), esc_html__( 'Disconnect', 'jckwds' ) );
 		} else {
 			$url = self::get_redirect_url( 'connect', $nonce ) . '&_nonce=' . $nonce;
-			echo sprintf( '<a href="%s" class="button">%s</a>', esc_attr( $url ), esc_html__( 'Authenticate', 'jckwds' ) );
+			echo sprintf( '<a href="%s" class="button iconic_wds_gcal_auth_btn">%s</a>', esc_attr( $url ), esc_html__( 'Authenticate', 'jckwds' ) );
 		}
 	}
 
@@ -97,7 +97,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$args['value'] = esc_attr( stripslashes( $args['value'] ) );
 
 		echo '<input type="text" readonly name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['id'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text ' . esc_attr( $args['class'] ) . '" />';
-		echo '<button type="button" class="button" onclick="navigator.clipboard.writeText( document.getElementById( \'' . esc_attr( $args['id'] ) . '\' ).value )">Copy</button>';
+		echo '<button type="button" class="button iconic-wds-gcal-redirect-copy">Copy</button>';
 
 	}
 

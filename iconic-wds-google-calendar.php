@@ -114,13 +114,18 @@ class Iconic_WDS_Gcal {
 		load_plugin_textdomain( 'iconic-wds-gcal', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 		if ( is_admin() ) {
-			// add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-		} else {
-			// add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 		}
-
 	}
 
+	/**
+	 * Admin scripts.
+	 */
+	public function admin_scripts() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_enqueue_script( 'iconic-wds-gcal-admin', ICONIC_WDS_GCAL_URL . 'assets/admin/js/main' . $suffix . '.js', array( 'jquery' ), self::$version, true );
+		wp_enqueue_style( 'iconic-wds-gcal-admin', ICONIC_WDS_GCAL_URL . 'assets/admin/css/main' . $suffix . '.css', array(), self::$version );
+	}
 }
 
 global $iconic_wds_gcal;
