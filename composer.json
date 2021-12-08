@@ -1,0 +1,31 @@
+{
+	"repositories": [
+		{
+		  "type": "vcs",
+		  "url": "https://github.com/iconicwp/WordPress-Settings-Framework.git"
+		},
+		{
+		  "type": "vcs",
+		  "url": "https://github.com/iconicwp/iconic-core.git"
+		},
+		{
+		  "type": "vcs",
+		  "url": "https://github.com/iconicwp/workflows.git"
+		}
+	],
+    "require": {
+        "google/apiclient": "^2.0"
+    },
+	"require-dev": {
+		"iconicwp/iconic-core": "dev-master",
+		"iconicwp/workflows": "dev-master"
+	  },
+	"scripts": {
+		"pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+	},
+	"extra": {
+		"google/apiclient-services": [
+			"Calendar"
+		]
+	}
+}

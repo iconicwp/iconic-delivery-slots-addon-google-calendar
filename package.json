@@ -1,0 +1,22 @@
+{
+  "name": "iconic-wds-google-calendar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "iconic-plugin": "git+ssh://git@github.com/iconicwp/npm-iconic-plugin.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://pramodjodhani@github.com/iconicwp/iconic-wds-google-calendar.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iconicwp/iconic-wds-google-calendar/issues"
+  },
+  "homepage": "https://github.com/iconicwp/iconic-wds-google-calendar#readme"
+}

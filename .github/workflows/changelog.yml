@@ -1,0 +1,40 @@
+on:
+  pull_request:
+    branches:
+      - dev
+    types: [closed]
+
+jobs:
+  update_changelog:
+    name: Update and Commit Changelog
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && startsWith( github.event.pull_request.title, '[' )
+    steps:
+      # Checkout git.
+      - uses: actions/checkout@v2
+        with:
+          ref: dev # checkout dev branch.
+          fetch-depth: 0 # fetch all history.
+
+      - run: git config --global user.email "iconibot@jckemp.com"
+      - run: git config --global user.name "Iconibot"
+
+      - name: Create Changelog Entry String
+        run: |
+          import json
+          import os
+          with open('${{ github.event_path }}') as fh:
+              event = json.load(fh)
+          escaped = event['pull_request']['title']
+          with open(os.environ['GITHUB_ENV'], 'a') as fh:
+              print(f'PR_TITLE={escaped}', file=fh)
+        shell: python3 {0}
+
+      # Update changelog.
+      - run: |
+          printf "%b" "$PR_TITLE  \n" >> changelog-dev.md
+
+      # Commit changes.
+      - run: git add changelog-dev.md
+      - run: git commit -m "Update Changelog" || echo "No changes to commit"
+      - run: git push origin dev
