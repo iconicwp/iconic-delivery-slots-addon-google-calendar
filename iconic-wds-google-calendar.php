@@ -49,15 +49,31 @@ class Iconic_WDS_Gcal {
 	public function __construct() {
 		$this->define_constants();
 
-		if ( ! Iconic_WDS_Core_Helpers::is_plugin_active( 'woocommerce/woocommerce.php' ) && ! Iconic_WDS_Core_Helpers::is_plugin_active( 'woocommerce-old/woocommerce.php' ) ) {
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+	}
+
+	/**
+	 * Plugins loaded.
+	 */
+	public function plugins_loaded() {
+		if ( ! class_exists( 'Iconic_WDS' ) ) {
 			return;
 		}
 
 		$this->setup_autoloader();
-
 		$this->load_classes();
 
-		add_action( 'init', array( $this, 'initiate' ) );
+		if ( ! Iconic_WDS_Core_Helpers::is_plugin_active( 'woocommerce/woocommerce.php' ) && ! Iconic_WDS_Core_Helpers::is_plugin_active( 'woocommerce-old/woocommerce.php' ) ) {
+			return;
+		}
+
+		add_action( 'init', array( $this, 'load_textdomain' ) );
+
+		if ( is_admin() ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+		}
+
+		Iconic_WDS_Gcal_Google_Calendar::run();
 	}
 
 	/**
@@ -102,20 +118,13 @@ class Iconic_WDS_Gcal {
 	private function load_classes() {
 		require_once ICONIC_WDS_GCAL_PATH . 'vendor/autoload.php';
 		require_once ICONIC_WDS_GCAL_INC_PATH . 'admin/settings.php';
-
-		Iconic_WDS_Gcal_Google_Calendar::run();
 	}
 
 	/**
-	 * Runs when the plugin is initialized
+	 * Load textdomain.
 	 */
-	public function initiate() {
-		// Setup localization.
+	public function load_textdomain() {
 		load_plugin_textdomain( 'iconic-wds-gcal', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
-		if ( is_admin() ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-		}
 	}
 
 	/**

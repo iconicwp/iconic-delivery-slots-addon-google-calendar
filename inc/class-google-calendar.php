@@ -94,11 +94,9 @@ class Iconic_WDS_Gcal_Google_Calendar {
 	 * @param array $args Argument.
 	 */
 	public static function generate_redirect_url_field( $args ) {
-		$args['value'] = esc_attr( stripslashes( $args['value'] ) );
-
-		echo '<input type="text" readonly name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['id'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text ' . esc_attr( $args['class'] ) . '" />';
-		echo '<button type="button" class="button iconic-wds-gcal-redirect-copy">Copy</button>';
-
+		$redirect_url = self::get_redirect_url();
+		echo '<input type="text" readonly name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( $args['id'] ) . '" value="' . esc_attr( $redirect_url ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text ' . esc_attr( $args['class'] ) . '" />';
+		echo sprintf( '<button type="button" class="button iconic-wds-gcal-redirect-copy">%s</button>', esc_html__( 'Copy', 'jckwds' ) );
 	}
 
 	/**
@@ -173,6 +171,13 @@ class Iconic_WDS_Gcal_Google_Calendar {
 			return false;
 		}
 
+		$client_id     = Iconic_WDS_Core_Settings::get_setting_from_db( 'integrations', 'google_api' );
+		$client_secret = Iconic_WDS_Core_Settings::get_setting_from_db( 'integrations', 'google_secret' );
+
+		if ( empty( $client_id ) || empty( $client_secret ) ) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -190,21 +195,32 @@ class Iconic_WDS_Gcal_Google_Calendar {
 			return $calendar_list;
 		}
 
-		$client        = self::get_client();
-		$service       = new Google_Service_Calendar( $client );
-		$calendar_list = $service->calendarList->listCalendarList(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$calendars     = array();
+		$client_id = Iconic_WDS_Core_Settings::get_setting_from_db( 'integrations', 'google_api' );
+		$calendars = array();
 
-		foreach ( $calendar_list as $calendar ) {
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			if ( 'owner' !== $calendar->accessRole ) {
-				continue;
-			}
-
-			$calendars[ $calendar->getId() ] = $calendar->getSummary();
+		if ( empty( $client_id ) ) {
+			return array();
 		}
 
-		set_transient( 'iconic_wds_gcal_calendar_list', $calendars, 24 * 60 * 60 );
+		try {
+
+			$client        = self::get_client();
+			$service       = new Google_Service_Calendar( $client );
+			$calendar_list = $service->calendarList->listCalendarList(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+
+			foreach ( $calendar_list as $calendar ) {
+				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				if ( 'owner' !== $calendar->accessRole ) {
+					continue;
+				}
+
+				$calendars[ $calendar->getId() ] = $calendar->getSummary();
+			}
+
+			set_transient( 'iconic_wds_gcal_calendar_list', $calendars, 24 * 60 * 60 );
+		} catch ( Exception $ex ) {
+			$calendars = array();
+		}
 
 		return $calendars;
 	}
@@ -470,5 +486,5 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		}
 
 		return apply_filters( 'iconic_wds_gcal_replace_placeholder', $string, $order, $context );
-	}	
+	}
 }
