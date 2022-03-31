@@ -359,6 +359,10 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$start->setDateTime( gmdate( 'c', $timestamp_start ) );
 		$start->setTimeZone( 'UTC' );
 
+		if ( empty( $timestamp_end ) ) {
+			$timestamp_end = $timestamp_start;
+		}
+
 		$end = new Google_Service_Calendar_EventDateTime();
 		$end->setDateTime( gmdate( 'c', $timestamp_end ) );
 		$end->setTimeZone( 'UTC' );
