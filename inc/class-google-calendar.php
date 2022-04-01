@@ -292,19 +292,25 @@ class Iconic_WDS_Gcal_Google_Calendar {
 			return false;
 		}
 
-		$client  = self::get_client();
-		$service = new Google_Service_Calendar( $client );
+		try {
+			$client  = self::get_client();
+			$service = new Google_Service_Calendar( $client );
 
-		$event = new Google_Service_Calendar_Event();
-		$event = self::prepare_event( $event, $order );
+			$event = new Google_Service_Calendar_Event();
+			$event = self::prepare_event( $event, $order );
 
-		$event = $service->events->insert( $calendar_id, $event );
+			$event = $service->events->insert( $calendar_id, $event );
 
-		if ( $event ) {
-			update_post_meta( $order->get_id(), self::CALENDAR_ID_META_KEY, $event->getId() );
+			if ( $event ) {
+				update_post_meta( $order->get_id(), self::CALENDAR_ID_META_KEY, $event->getId() );
+			}
+
+			return $event->getId();
+		} catch ( Exception $ex ) {
+			self::log( $ex->getMessage() );
+
+			return false;
 		}
-
-		return $event->getId();
 	}
 
 	/**
@@ -330,7 +336,15 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$event   = $service->events->get( $calendar_id, $event_id );
 		$event   = self::prepare_event( $event, $order );
 
-		return $service->events->patch( $calendar_id, $event_id, $event );
+		try {
+			$event = $service->events->patch( $calendar_id, $event_id, $event );
+
+			return $event;
+		} catch ( Exception $ex ) {
+			self::log( $ex->getMessage() );
+
+			return false;
+		}
 	}
 
 	/**
@@ -491,4 +505,17 @@ class Iconic_WDS_Gcal_Google_Calendar {
 
 		return apply_filters( 'iconic_wds_gcal_replace_placeholder', $string, $order, $context );
 	}
+
+	/**
+	 * Log error.
+	 *
+	 * @param string $message Message.
+	 *
+	 * @return void
+	 */
+	public static function log( $message ) {
+		$logger = wc_get_logger();
+		$logger->info( $message, array( 'source' => 'iconic-wds-gcal' ) );
+	}
+
 }
