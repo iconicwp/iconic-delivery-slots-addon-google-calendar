@@ -74,6 +74,7 @@ class Iconic_WDS_Gcal {
 		}
 
 		Iconic_WDS_Gcal_Google_Calendar::run();
+		Iconic_WDS_Gcal_Settings::run();
 	}
 
 	/**
