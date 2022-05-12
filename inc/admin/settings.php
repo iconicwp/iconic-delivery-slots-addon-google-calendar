@@ -69,11 +69,12 @@ function jckwds_gcal_settings( $wpsf_settings ) {
 	}
 
 	$wpsf_settings['sections'][] = array(
-		'tab_id'        => 'integrations',
-		'section_id'    => 'google',
-		'section_title' => __( 'Google Calender Authentication', 'iconic-wds-gcal' ),
-		'section_order' => 0,
-		'fields'        => $gcal_fields,
+		'tab_id'              => 'integrations',
+		'section_id'          => 'google',
+		'section_title'       => __( 'Google Calender Authentication', 'iconic-wds-gcal' ),
+		'section_description' => 'Follow <a href="https://iconicwp.com/?post_type=knowledgebase&p=9872&preview=true">this guide</a> to create a Google App and generate Client ID and Secret key.',
+		'section_order'       => 0,
+		'fields'              => $gcal_fields,
 	);
 
 	$wpsf_settings['sections'][] = array(
