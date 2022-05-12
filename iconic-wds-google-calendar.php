@@ -71,6 +71,7 @@ class Iconic_WDS_Gcal {
 
 		if ( is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+			add_action( 'plugin_action_links', array( $this, 'add_plugin_actions' ), 10, 4 );
 		}
 
 		Iconic_WDS_Gcal_Google_Calendar::run();
@@ -135,6 +136,26 @@ class Iconic_WDS_Gcal {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_script( 'iconic-wds-gcal-admin', ICONIC_WDS_GCAL_URL . 'assets/admin/js/main' . $suffix . '.js', array( 'jquery' ), self::$version, true );
 		wp_enqueue_style( 'iconic-wds-gcal-admin', ICONIC_WDS_GCAL_URL . 'assets/admin/css/main' . $suffix . '.css', array(), self::$version );
+	}
+
+	/**
+	 * Add settings URL to plugin action links.
+	 *
+	 * @param string[] $actions     Actions.
+	 * @param string   $plugin_file Plugin file.
+	 * @param array    $plugin_data Plugin data.
+	 * @param string   $context     Context.
+	 *
+	 * @return string[]
+	 */
+	public static function add_plugin_actions( $actions, $plugin_file, $plugin_data, $context ) {
+		if ( false === strpos( $plugin_file, 'iconic-wds-google-calendar.php' ) ) {
+			return $actions;
+		}
+
+		$settings_url = admin_url( 'admin.php?page=jckwds-settings#tab-integrations' );
+		$actions[]    = sprintf( "<a href='%s'>%s</a>", esc_url( $settings_url ), esc_html__( 'Settings', 'iconic-wds-gcal' ) );
+		return $actions;
 	}
 }
 
