@@ -29,6 +29,9 @@ function jckwds_gcal_settings( $wpsf_settings ) {
 		);
 	}
 
+	// @todo change this URL.
+	$document_url = 'https://iconicwp.com/?post_type=knowledgebase&p=9872&preview=true';
+
 	$gcal_fields = array(
 		array(
 			'id'       => 'api',
@@ -37,8 +40,7 @@ function jckwds_gcal_settings( $wpsf_settings ) {
 			'type'     => 'text',
 			'link'     => array(
 				'text'     => __( 'Get your API key', 'iconic-wds-gcal' ),
-				// TODO change this URL.
-				'url'      => 'https://iconicwp.com/?post_type=knowledgebase&p=9872&preview=true',
+				'url'      => $document_url,
 				'type'     => 'tooltip',
 				'external' => true,
 			),
@@ -50,8 +52,7 @@ function jckwds_gcal_settings( $wpsf_settings ) {
 			'type'     => 'text',
 			'link'     => array(
 				'text'     => __( 'Get your Secret Key', 'iconic-wds-gcal' ),
-				// TODO change this URL.
-				'url'      => 'https://iconicwp.com/?post_type=knowledgebase&p=9872&preview=true',
+				'url'      => $document_url,
 				'type'     => 'tooltip',
 				'external' => true,
 			),
@@ -86,8 +87,8 @@ function jckwds_gcal_settings( $wpsf_settings ) {
 		'tab_id'              => 'integrations',
 		'section_id'          => 'google',
 		'section_title'       => __( 'Google Calender Authentication', 'iconic-wds-gcal' ),
-		// TODO change this URL.
-		'section_description' => 'Follow <a href="https://iconicwp.com/?post_type=knowledgebase&p=9872&preview=true">this guide</a> to create a Google App and generate Client ID and Secret key.',
+		// translators: %s: URL to the document.
+		'section_description' => sprintf( __( 'Follow <a href="%s">this guide</a> to create a Google App and generate Client ID and Secret key.', 'iconic-wds-gcal' ), $document_url ),
 		'section_order'       => 0,
 		'fields'              => $gcal_fields,
 	);
