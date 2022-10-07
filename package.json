@@ -4,7 +4,7 @@
   "description": "",
   "main": "gulpfile.js",
   "dependencies": {
-    "iconic-plugin": "git+ssh://git@github.com/iconicwp/npm-iconic-plugin.git"
+    "iconic-plugin": "git+ssh://git@github.com/iconicwp/npm-iconic-plugin.git#feature/gulp-4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
