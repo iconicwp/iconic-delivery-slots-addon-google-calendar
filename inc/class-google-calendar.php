@@ -196,14 +196,15 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		}
 
 		$client_id = Iconic_WDS_Core_Settings::get_setting_from_db( 'integrations', 'google_api' );
-		$calendars = array();
+		$calendars = array(
+			'' => esc_html__( '--Select a Calendar--', 'jckwds' ),
+		);
 
 		if ( empty( $client_id ) ) {
 			return array();
 		}
 
 		try {
-
 			$client        = self::get_client();
 			$service       = new Google_Service_Calendar( $client );
 			$calendar_list = $service->calendarList->listCalendarList(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase

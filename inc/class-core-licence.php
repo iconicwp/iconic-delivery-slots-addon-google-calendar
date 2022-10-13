@@ -105,10 +105,6 @@ class Iconic_WDS_Gcal_Core_Licence {
 				'has_paid_plans'      => self::get_fs_arg( 'has_paid_plans', true ),
 				'has_addons'          => self::get_fs_arg( 'has_addons', false ),
 				'is_org_compliant'    => self::get_fs_arg( 'is_org_compliant', false ),
-				'trial'               => array(
-					'days'               => self::get_fs_arg( 'trial/days', 14 ),
-					'is_require_payment' => self::get_fs_arg( 'trial/is_require_payment', true ),
-				),
 				'menu'                => $menu,
 			)
 		);
@@ -281,7 +277,7 @@ class Iconic_WDS_Gcal_Core_Licence {
 	 * @todo Move to settings class.
 	 */
 	public static function back_to_settings_link( $html = '' ) {
-		return $html . sprintf( '<a href="%s" class="button button-secondary">&larr; %s</a>', self::$args['urls']['settings'], __( 'Back to Settings', 'jckwds' ) );
+		return $html . sprintf( '<a href="%s" class="button button-secondary">&larr; %s</a>', self::$args['urls']['settings'], esc_html__( 'Back to Settings', 'iconic-wds-gcal' ) );
 	}
 
 	/**
@@ -307,7 +303,7 @@ class Iconic_WDS_Gcal_Core_Licence {
 	 * @return array
 	 */
 	public static function add_action_links( $links ) {
-		$links[] = sprintf( '<a href="%s" target="_blank">%s</a>', self::$args['urls']['product'] . '/changelog/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=changelog-link', __( 'Changelog', 'jckwds' ) );
+		$links[] = sprintf( '<a href="%s" target="_blank">%s</a>', self::$args['urls']['product'] . '/changelog/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=iconic-wds-gcal&utm_content=changelog-link', esc_html__( 'Changelog', 'iconic-wds-gcal' ) );
 
 		return $links;
 	}
@@ -318,7 +314,7 @@ class Iconic_WDS_Gcal_Core_Licence {
 	 * @return string
 	 */
 	public static function admin_account_link() {
-		return sprintf( '<a href="%s" class="button button-secondary">%s</a>', self::$args['urls']['account'], __( 'Manage Licence &amp; Billing', 'jckwds' ) );
+		return sprintf( '<a href="%s" class="button button-secondary">%s</a>', self::$args['urls']['account'], esc_html__( 'Manage Licence &amp; Billing', 'iconic-wds-gcal' ) );
 	}
 
 	/**
@@ -332,15 +328,6 @@ class Iconic_WDS_Gcal_Core_Licence {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Is trial?
-	 *
-	 * @return bool
-	 */
-	public static function is_trial() {
-		return self::$freemius->is_trial();
 	}
 
 	/**

@@ -118,7 +118,7 @@ class Iconic_WDS_Gcal {
 	 * Load classes.
 	 */
 	private function load_classes() {
-		require_once ICONIC_WDS_GCAL_PATH . 'vendor/autoload.php';
+		require_once ICONIC_WDS_GCAL_PATH . 'inc/vendor/autoload.php';
 		require_once ICONIC_WDS_GCAL_INC_PATH . 'admin/settings.php';
 	}
 

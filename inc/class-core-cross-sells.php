@@ -73,7 +73,7 @@ class Iconic_WDS_Gcal_Core_Cross_Sells {
 		$request = wp_remote_get( 'https://iconicwp.com/wp-json/wp/v2/cpt_product?per_page=100' );
 
 		if ( is_wp_error( $request ) ) {
-			return array(); // Bail early
+			return array(); // Bail early.
 		}
 
 		$body    = wp_remote_retrieve_body( $request );
@@ -94,7 +94,7 @@ class Iconic_WDS_Gcal_Core_Cross_Sells {
 	 * @return bool|stdClass
 	 */
 	public static function get_plugin() {
-		$class_name = substr( 'Iconic_WDS_Gcal_', 0, -1 );
+		$class_name = 'Main_Class';
 		$plugins    = self::get_plugins();
 
 		if ( empty( $plugins ) ) {
@@ -115,7 +115,7 @@ class Iconic_WDS_Gcal_Core_Cross_Sells {
 	/**
 	 * Get selected plugins.
 	 *
-	 * @param int $limit
+	 * @param int $limit Max number of plugins to fetch.
 	 *
 	 * @return bool|array
 	 */

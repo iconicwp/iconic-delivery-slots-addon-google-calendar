@@ -1,6 +1,7 @@
 ---
 name: Bug
 about: Use when reporting a problem with a project.
+labels: ["Size: Small", "Type: Bug"]
 
 ---
 **Source**
