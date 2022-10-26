@@ -170,9 +170,16 @@ class Iconic_WDS_Gcal {
 		if ( 'plugin' === $screen->id ) {
 			return;
 		}
+
+		$plugin_url = 'https://iconicwp.com/products/woocommerce-delivery-slots/?utm_source=iconic&utm_medium=plugin&utm_campaign=iconic-wds-gcal';
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php esc_html_e( 'Google Calendar Addon for WooCommerce Delivery Slots requires the WooCommerce Delivery Slots to be installed and activated.' ); ?></p>
+			<p>
+			<?php
+			// Translators: Plugin link.
+			echo wp_kses_post( sprintf( __( 'Google Calendar Addon for WooCommerce Delivery Slots requires the <a href="%s" target=_blank>WooCommerce Delivery Slots</a> to be installed and activated.', 'iconic-wds-gcal' ), esc_attr( $plugin_url ) ) );
+			?>
+			</p>
 		</div>
 		<?php
 	}
