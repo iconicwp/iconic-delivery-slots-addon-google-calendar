@@ -57,6 +57,7 @@ class Iconic_WDS_Gcal {
 	 */
 	public function plugins_loaded() {
 		if ( ! class_exists( 'Iconic_WDS' ) ) {
+			add_action( 'admin_notices', array( $this, 'show_wds_core_missing_notice' ) );
 			return;
 		}
 
@@ -156,6 +157,24 @@ class Iconic_WDS_Gcal {
 		$settings_url = admin_url( 'admin.php?page=jckwds-settings#tab-integrations' );
 		$actions[]    = sprintf( "<a href='%s'>%s</a>", esc_url( $settings_url ), esc_html__( 'Settings', 'iconic-wds-gcal' ) );
 		return $actions;
+	}
+
+	/**
+	 * Show notice for missing WDS core plugin.
+	 *
+	 * @return void
+	 */
+	public static function show_wds_core_missing_notice() {
+		$screen = get_current_screen();
+
+		if ( 'plugin' === $screen->id ) {
+			return;
+		}
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Google Calendar Addon for WooCommerce Delivery Slots requires the WooCommerce Delivery Slots to be installed and activated.' ); ?></p>
+		</div>
+		<?php
 	}
 }
 
