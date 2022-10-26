@@ -90,6 +90,10 @@ class Iconic_WDS_Gcal_Core_Settings {
 		add_action( 'wpsf_after_tab_links_' . self::$args['option_group'], array( __CLASS__, 'add_sidebar' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'wpsf_after_title_' . self::$args['option_group'], array( __CLASS__, 'add_version' ) );
+
+		if ( ! empty( self::$args['basename'] ) ) {
+			add_filter( 'plugin_action_links_' . self::$args['basename'], array( __CLASS__, 'plugin_action_links' ) );
+		}
 	}
 
 	/**
@@ -156,7 +160,7 @@ class Iconic_WDS_Gcal_Core_Settings {
 		} else {
 			$default_title = sprintf( '<div style="height: 28px; line-height: 28px;">%s</div>', self::$args['title'] );
 		}
-		
+
 		self::$settings_framework->add_settings_page(
 			array(
 				'parent_slug' => isset( self::$args['parent_slug'] ) ? self::$args['parent_slug'] : 'woocommerce',
@@ -428,7 +432,7 @@ class Iconic_WDS_Gcal_Core_Settings {
 			return;
 		}
 
-		$cross_sells  = Iconic_WDS_Gcal_Core_Cross_Sells::get_selected_plugins();
+		$cross_sells = Iconic_WDS_Gcal_Core_Cross_Sells::get_selected_plugins();
 
 		if ( empty( $cross_sells ) ) {
 			return;
@@ -716,4 +720,24 @@ class Iconic_WDS_Gcal_Core_Settings {
 		wp_enqueue_script( 'freemius-checkout', 'https://checkout.freemius.com/checkout.min.js', array(), '1', true );
 	}
 
+	/**
+	 * Add link to settings page.
+	 *
+	 * @param array $links Array of plugin links.
+	 *
+	 * @return array
+	 */
+	public static function plugin_action_links( $links ) {
+		if ( empty( self::$settings_framework->settings_page ) ) {
+			return $links;
+		}
+
+		$settings_path = sprintf( 'admin.php?page=%s', self::$settings_framework->settings_page['slug'] );
+
+		$action_links = array(
+			'settings' => '<a href="' . admin_url( $settings_path ) . '" aria-label="' . esc_attr__( 'View settings', 'iconic-wds-gcal' ) . '">' . esc_html__( 'Settings', 'iconic-wds-gcal' ) . '</a>',
+		);
+
+		return array_merge( $action_links, $links );
+	}
 }

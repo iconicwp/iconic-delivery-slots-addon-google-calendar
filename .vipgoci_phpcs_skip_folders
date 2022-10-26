@@ -1,0 +1,6 @@
+.github
+dev-lib
+node_modules
+vendor
+assets/frontend/js
+assets/admin/js/
