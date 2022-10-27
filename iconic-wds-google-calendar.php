@@ -177,7 +177,7 @@ class Iconic_WDS_Gcal {
 			<p>
 			<?php
 			// Translators: Plugin link.
-			echo wp_kses_post( sprintf( __( 'Google Calendar Addon for WooCommerce Delivery Slots requires the <a href="%s" target=_blank>WooCommerce Delivery Slots</a> to be installed and activated.', 'iconic-wds-gcal' ), esc_attr( $plugin_url ) ) );
+			echo wp_kses_post( sprintf( __( 'Google Calendar Addon for WooCommerce Delivery Slots requires the <a href="%s" target=_blank>WooCommerce Delivery Slots</a> plugin to be installed and activated.', 'iconic-wds-gcal' ), esc_attr( $plugin_url ) ) );
 			?>
 			</p>
 		</div>
