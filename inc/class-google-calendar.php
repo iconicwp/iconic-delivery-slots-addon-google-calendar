@@ -501,9 +501,16 @@ class Iconic_WDS_Gcal_Google_Calendar {
 				$cart_items .= $item['name'] . ' x ' . $item['qty'] . ', ';
 			}
 
+			$cart_items = trim( $cart_items, ', ' );
+
 			$string = str_replace( '{CART_ITEMS}', $cart_items, $string );
 		}
 
+		/**
+		 * Event description after placeholders have been replaced.
+		 *
+		 * @since 0.1.0.
+		 */
 		return apply_filters( 'iconic_wds_gcal_replace_placeholder', $string, $order, $context );
 	}
 
