@@ -173,7 +173,7 @@ class Iconic_WDS_Gcal {
 
 		$plugin_url = 'https://iconicwp.com/products/woocommerce-delivery-slots/?utm_source=iconic&utm_medium=plugin&utm_campaign=iconic-wds-gcal';
 		?>
-		<div class="notice notice-error is-dismissible">
+		<div class="notice notice-error">
 			<p>
 			<?php
 			// Translators: Plugin link.
