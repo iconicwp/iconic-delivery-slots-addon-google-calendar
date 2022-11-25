@@ -361,7 +361,8 @@ class Iconic_WDS_Gcal_Google_Calendar {
 
 		$calendar_id     = self::get_calendar_id();
 		$timestamp_start = $order->get_meta( 'jckwds_timestamp' );
-		$timestamp_end   = $order->get_meta( 'jckwds_timestamp_end' );
+		$timestamp_end   = $timestamp_start;
+		$db_row          = Iconic_WDS_Reservations::get_reservation_for_order( $order->get_id() );
 
 		$summary     = self::replace_placeholders( $iconic_wds->settings['integrations_google_setting_event_title'], $order, 'summary' );
 		$description = self::replace_placeholders( $iconic_wds->settings['integrations_google_setting_event_description'], $order, 'description' );
@@ -374,8 +375,10 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$start->setDateTime( gmdate( 'c', $timestamp_start ) );
 		$start->setTimeZone( 'UTC' );
 
-		if ( empty( $timestamp_end ) ) {
-			$timestamp_end = $timestamp_start;
+		// Get end timestamp.
+		if ( $db_row && $db_row->endtime && $db_row->starttime ) {
+			$diff_minute   = $db_row->endtime - $db_row->starttime;
+			$timestamp_end = $timestamp_end + ( $diff_minute * 60 );
 		}
 
 		$end = new Google_Service_Calendar_EventDateTime();
