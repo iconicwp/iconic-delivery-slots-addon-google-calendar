@@ -29,18 +29,33 @@ function jckwds_gcal_settings( $wpsf_settings ) {
 		);
 	}
 
+	// @todo change this URL.
+	$document_url = 'https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/';
+
 	$gcal_fields = array(
 		array(
 			'id'       => 'api',
 			'title'    => __( 'Client ID', 'iconic-wds-gcal' ),
 			'subtitle' => '',
 			'type'     => 'text',
+			'link'     => array(
+				'text'     => __( 'Get your API key', 'iconic-wds-gcal' ),
+				'url'      => $document_url,
+				'type'     => 'tooltip',
+				'external' => true,
+			),
 		),
 		array(
 			'id'       => 'secret',
 			'title'    => __( 'Client Secret', 'iconic-wds-gcal' ),
 			'subtitle' => '',
 			'type'     => 'text',
+			'link'     => array(
+				'text'     => __( 'Get your Secret Key', 'iconic-wds-gcal' ),
+				'url'      => $document_url,
+				'type'     => 'tooltip',
+				'external' => true,
+			),
 		),
 		array(
 			'id'       => 'redirect_url',
@@ -69,11 +84,13 @@ function jckwds_gcal_settings( $wpsf_settings ) {
 	}
 
 	$wpsf_settings['sections'][] = array(
-		'tab_id'        => 'integrations',
-		'section_id'    => 'google',
-		'section_title' => __( 'Google Calender Authentication', 'iconic-wds-gcal' ),
-		'section_order' => 0,
-		'fields'        => $gcal_fields,
+		'tab_id'              => 'integrations',
+		'section_id'          => 'google',
+		'section_title'       => __( 'Google Calender Authentication', 'iconic-wds-gcal' ),
+		// translators: %s: URL to the document.
+		'section_description' => sprintf( __( 'Follow <a href="%s" target="_blank">this guide</a> to create a Google App and generate Client ID and Secret key.', 'iconic-wds-gcal' ), $document_url ),
+		'section_order'       => 0,
+		'fields'              => $gcal_fields,
 	);
 
 	$wpsf_settings['sections'][] = array(

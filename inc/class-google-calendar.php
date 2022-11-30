@@ -196,14 +196,15 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		}
 
 		$client_id = Iconic_WDS_Core_Settings::get_setting_from_db( 'integrations', 'google_api' );
-		$calendars = array();
+		$calendars = array(
+			'' => esc_html__( '--Select a Calendar--', 'jckwds' ),
+		);
 
 		if ( empty( $client_id ) ) {
 			return array();
 		}
 
 		try {
-
 			$client        = self::get_client();
 			$service       = new Google_Service_Calendar( $client );
 			$calendar_list = $service->calendarList->listCalendarList(); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -503,9 +504,16 @@ class Iconic_WDS_Gcal_Google_Calendar {
 				$cart_items .= $item['name'] . ' x ' . $item['qty'] . ', ';
 			}
 
+			$cart_items = trim( $cart_items, ', ' );
+
 			$string = str_replace( '{CART_ITEMS}', $cart_items, $string );
 		}
 
+		/**
+		 * Event description after placeholders have been replaced.
+		 *
+		 * @since 0.1.0.
+		 */
 		return apply_filters( 'iconic_wds_gcal_replace_placeholder', $string, $order, $context );
 	}
 

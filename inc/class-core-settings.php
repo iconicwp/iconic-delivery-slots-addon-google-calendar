@@ -90,6 +90,10 @@ class Iconic_WDS_Gcal_Core_Settings {
 		add_action( 'wpsf_after_tab_links_' . self::$args['option_group'], array( __CLASS__, 'add_sidebar' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'wpsf_after_title_' . self::$args['option_group'], array( __CLASS__, 'add_version' ) );
+
+		if ( ! empty( self::$args['basename'] ) ) {
+			add_filter( 'plugin_action_links_' . self::$args['basename'], array( __CLASS__, 'plugin_action_links' ) );
+		}
 	}
 
 	/**
@@ -151,7 +155,11 @@ class Iconic_WDS_Gcal_Core_Settings {
 	 * Add settings page.
 	 */
 	public static function add_settings_page() {
-		$default_title = sprintf( '<div style="height: 28px; line-height: 28px;"><img width="24" height="28" style="display: inline-block; vertical-align: middle; margin: 0 8px 0 0" src="%s"> %s by <a href="https://iconicwp.com/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=iconic-woothumbs&utm_content=settings-title" target="_blank">Iconic</a></div>', esc_attr( self::$iconic_svg ), self::$args['title'] );
+		if ( ! defined( 'ICONIC_DISABLE_BRAND' ) && ! defined( 'ICONIC_WDS_GCAL_DISABLE_BRAND' ) ) {
+			$default_title = sprintf( '<div style="height: 28px; line-height: 28px;"><img width="24" height="28" style="display: inline-block; vertical-align: middle; margin: 0 8px 0 0" src="%s"> %s by <a href="https://iconicwp.com/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=iconic-woothumbs&utm_content=settings-title" target="_blank">Iconic</a></div>', esc_attr( self::$iconic_svg ), self::$args['title'] );
+		} else {
+			$default_title = sprintf( '<div style="height: 28px; line-height: 28px;">%s</div>', self::$args['title'] );
+		}
 
 		self::$settings_framework->add_settings_page(
 			array(
@@ -162,6 +170,11 @@ class Iconic_WDS_Gcal_Core_Settings {
 			)
 		);
 
+		/**
+		 * Do admin menu action for option group.
+		 *
+		 * @since 1.0.6
+		 */
 		do_action( 'admin_menu_' . self::$args['option_group'] );
 	}
 
@@ -173,6 +186,15 @@ class Iconic_WDS_Gcal_Core_Settings {
 	public static function get_settings_page_capability() {
 		$capability = isset( self::$args['capability'] ) ? self::$args['capability'] : 'manage_woocommerce';
 
+		/**
+		 * Filter settings page capability.
+		 *
+		 * @param string $capability Capability.
+		 *
+		 * @return string
+		 *
+		 * @since 1.0.6
+		 */
 		return apply_filters( self::$args['option_group'] . '_settings_page_capability', $capability );
 	}
 
@@ -211,14 +233,13 @@ class Iconic_WDS_Gcal_Core_Settings {
 
 		add_action( 'admin_notices', array( self::$settings_framework, 'admin_notices' ), 50 );
 		add_action( 'admin_notices', array( __CLASS__, 'hide_notices' ), 1 );
-		add_action( 'admin_notices', array( __CLASS__, 'account_getting_started' ), 1 );
 	}
 
 	/**
 	 * Hide Iconic notices if set.
 	 */
 	public static function hide_notices() {
-		$hide_notice = filter_input( INPUT_GET, 'jckwds-hide-notice' );
+		$hide_notice = filter_input( INPUT_GET, 'iconic-wds-gcal-hide-notice' );
 
 		if ( empty( $hide_notice ) ) {
 			return;
@@ -231,127 +252,6 @@ class Iconic_WDS_Gcal_Core_Settings {
 		}
 
 		update_user_meta( get_current_user_id(), 'dismissed_' . $hide_notice . '_notice', true );
-	}
-
-	/**
-	 * Add getting started notice to settings pages.
-	 */
-	public static function account_getting_started() {
-		if ( ! self::is_settings_page() && ! self::is_settings_page( '-account' ) ) {
-			return;
-		}
-
-		if ( empty( self::$args['docs']['getting-started'] ) ) {
-			return;
-		}
-
-		if ( ! defined( 'ICONIC_WDS_GCAL_DISABLE_DASH' ) || ( class_exists( 'Iconic_WDS_Gcal_Core_Licence' ) && ! Iconic_WDS_Gcal_Core_Licence::has_valid_licence() ) ) {
-			return;
-		}
-
-		$option_name = str_replace( '-', '_', self::$args['option_group'] ) . '_getting_started';
-
-		if ( get_user_meta( get_current_user_id(), 'dismissed_' . $option_name . '_notice', true ) ) {
-			return;
-		}
-		?>
-		<style>
-			.iconic-notice {
-				padding: 35px 30px 35px 38px;
-				background-color: #fff;
-				margin: 20px 20px 20px 0;
-				box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-				font-size: 15px;
-				position: relative;
-				border: none;
-				border-radius: 0 4px 4px 0;
-			}
-
-			.iconic-notice:after {
-				content: "";
-				position: absolute;
-				top: 0;
-				left: 0;
-				bottom: 0;
-				height: 100%;
-				width: 8px;
-				background: linear-gradient(0deg, #5558DA 0%, #5EA8EF 100%);
-			}
-
-			.iconic-notice h2 {
-				margin: 0 0 1.2em;
-				font-size: 23px;
-				position: relative;
-				line-height: 1.2em;
-			}
-
-			.iconic-notice h3 {
-				margin: 0 0 1.5em;
-			}
-
-			.iconic-notice p,
-			.iconic-notice li {
-				font-size: 15px;
-			}
-
-			.iconic-notice li {
-				margin: 0 0 10px;
-			}
-
-			.iconic-notice p,
-			.iconic-notice ol,
-			.iconic-notice ul {
-				margin-bottom: 2em;
-			}
-
-			.iconic-notice :last-child {
-				margin-bottom: 0;
-			}
-
-			.iconic-notice .notice-dismiss {
-				position: absolute;
-				top: 0;
-				right: 0;
-				padding: 10px 13px;
-				margin-top: 0;
-				font-size: 13px;
-				line-height: 20px;
-				text-decoration: none;
-				height: 20px;
-				z-index: 20;
-			}
-
-			.iconic-notice .notice-dismiss:before {
-				-webkit-transition: auto;
-				transition: all .1s ease-in-out;
-				margin: 0;
-				padding: 0;
-				display: inline-block;
-				vertical-align: top;
-			}
-		</style>
-		<div class="iconic-notice iconic-notice--getting-started">
-			<a class="woocommerce-message-close notice-dismiss" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'jckwds-hide-notice', $option_name ), self::$args['option_group_underscore'] . '_hide_notices_nonce', '_' . self::$args['option_group_underscore'] . '_notice_nonce' ) ); ?>">
-				<?php esc_html_e( 'Dismiss', 'woocommerce' ); ?>
-			</a>
-			<h2>Welcome to <?php echo esc_html( self::$args['title'] ); ?>!</a></h2>
-			<p><?php esc_html_e( "Thank you for choosing Iconic. We've put together some useful links to help you get started:", 'jckwds' ); ?></p>
-
-			<?php self::output_getting_started_links(); ?>
-
-			<p>
-				<strong><?php esc_html_e( 'Need some help?', 'jckwds' ); ?></strong>
-				<?php
-				printf(
-				/* Translators: Documentation URL. */
-					wp_kses_post( __( 'Take a look at our <a href="%s?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=need-some-help" target="_blank">troubleshooting documentation</a>.', 'jckwds' ) ),
-					esc_url( self::get_docs_url( 'troubleshooting' ) )
-				);
-				?>
-				<?php esc_html_e( 'There is a permanent link to the plugin documentation in the "Support" section below.', 'jckwds' ); ?>
-			</p>
-		</div>
-		<?php
 	}
 
 	/**
@@ -423,12 +323,12 @@ class Iconic_WDS_Gcal_Core_Settings {
 			return;
 		}
 		?>
-		<h3><?php esc_html_e( 'Getting Started', 'jckwds' ); ?></h3>
+		<h3><?php esc_html_e( 'Getting Started', 'iconic-wds-gcal' ); ?></h3>
 
 		<ol>
 			<?php foreach ( $links as $link ) { ?>
 				<li>
-					<a href="<?php echo esc_url( self::get_docs_url() . $link['href'] ); ?>?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=getting-started-links" target="_blank"><?php echo esc_html( $link['title'] ); ?></a>
+					<a href="<?php echo esc_url( self::get_docs_url() . $link['href'] ); ?>?utm_source=Iconic&utm_medium=Plugin&utm_campaign=iconic-wds-gcal&utm_content=getting-started-links" target="_blank"><?php echo esc_html( $link['title'] ); ?></a>
 				</li>
 			<?php } ?>
 		</ol>
@@ -467,59 +367,59 @@ class Iconic_WDS_Gcal_Core_Settings {
 
 		$settings['tabs'][] = array(
 			'id'    => 'dashboard',
-			'title' => __( 'Dashboard', 'jckwds' ),
+			'title' => esc_html__( 'Dashboard', 'iconic-wds-gcal' ),
 		);
 
 		if ( current_user_can( 'manage_options' ) && ! defined( 'ICONIC_DISABLE_DASH' ) && ! defined( 'ICONIC_WDS_GCAL_DISABLE_DASH' ) ) {
 			$settings['sections']['licence'] = array(
 				'tab_id'              => 'dashboard',
 				'section_id'          => 'general',
-				'section_title'       => __( 'License &amp; Account Settings', 'jckwds' ),
+				'section_title'       => esc_html__( 'License &amp; Account Settings', 'iconic-wds-gcal' ),
 				'section_description' => '',
 				'section_order'       => 10,
 				'fields'              => array(
 					array(
 						'id'       => 'licence',
-						'title'    => __( 'License &amp; Billing', 'jckwds' ),
-						'subtitle' => __( 'Activate or sync your license, cancel your subscription, print invoices, and manage your account information.', 'jckwds' ),
+						'title'    => esc_html__( 'License &amp; Billing', 'iconic-wds-gcal' ),
+						'subtitle' => esc_html__( 'Activate or sync your license, cancel your subscription, print invoices, and manage your account information.', 'iconic-wds-gcal' ),
 						'type'     => 'custom',
 						'output'   => Iconic_WDS_Gcal_Core_Licence::admin_account_link(),
 					),
 					array(
 						'id'       => 'account',
-						'title'    => __( 'Your Account', 'jckwds' ),
-						'subtitle' => __( 'Manage all of your Iconic plugins, supscriptions, renewals, and more.', 'jckwds' ),
+						'title'    => esc_html__( 'Your Account', 'iconic-wds-gcal' ),
+						'subtitle' => esc_html__( 'Manage all of your Iconic plugins, supscriptions, renewals, and more.', 'iconic-wds-gcal' ),
 						'type'     => 'custom',
 						'output'   => self::account_link(),
 					),
 				),
 
 			);
-		}
 
-		$settings['sections']['support'] = array(
-			'tab_id'              => 'dashboard',
-			'section_id'          => 'support',
-			'section_title'       => __( 'Support', 'jckwds' ),
-			'section_description' => '',
-			'section_order'       => 30,
-			'fields'              => array(
-				array(
-					'id'       => 'support',
-					'title'    => __( 'Support', 'jckwds' ),
-					'subtitle' => __( 'Get premium support with a valid license.', 'jckwds' ),
-					'type'     => 'custom',
-					'output'   => self::support_link(),
+			$settings['sections']['support'] = array(
+				'tab_id'              => 'dashboard',
+				'section_id'          => 'support',
+				'section_title'       => esc_html__( 'Support', 'iconic-wds-gcal' ),
+				'section_description' => '',
+				'section_order'       => 30,
+				'fields'              => array(
+					array(
+						'id'       => 'support',
+						'title'    => esc_html__( 'Support', 'iconic-wds-gcal' ),
+						'subtitle' => esc_html__( 'Get premium support with a valid license.', 'iconic-wds-gcal' ),
+						'type'     => 'custom',
+						'output'   => self::support_link(),
+					),
+					array(
+						'id'       => 'documentation',
+						'title'    => esc_html__( 'Documentation', 'iconic-wds-gcal' ),
+						'subtitle' => esc_html__( 'Read the plugin documentation.', 'iconic-wds-gcal' ),
+						'type'     => 'custom',
+						'output'   => self::documentation_link(),
+					),
 				),
-				array(
-					'id'       => 'documentation',
-					'title'    => __( 'Documentation', 'jckwds' ),
-					'subtitle' => __( 'Read the plugin documentation.', 'jckwds' ),
-					'type'     => 'custom',
-					'output'   => self::documentation_link(),
-				),
-			),
-		);
+			);
+		}
 
 		return $settings;
 	}
@@ -532,11 +432,9 @@ class Iconic_WDS_Gcal_Core_Settings {
 			return;
 		}
 
-		$current_user = wp_get_current_user();
-		$cross_sells  = Iconic_WDS_Gcal_Core_Cross_Sells::get_selected_plugins();
-		$is_trial     = Iconic_WDS_Gcal_Core_Licence::is_trial();
+		$cross_sells = Iconic_WDS_Gcal_Core_Cross_Sells::get_selected_plugins();
 
-		if ( empty( $cross_sells ) && ! $is_trial ) {
+		if ( empty( $cross_sells ) ) {
 			return;
 		}
 		?>
@@ -713,7 +611,6 @@ class Iconic_WDS_Gcal_Core_Settings {
 						plan_id = $button.data( 'plan-id' ),
 						public_key = $button.data( 'public-key' ),
 						type = $button.data( 'type' ),
-						trial = 'trial' === type,
 						coupon = $button.data( 'coupon' ),
 						licenses = $button.data( 'licenses' ),
 						title = $button.data( 'title' ),
@@ -732,7 +629,6 @@ class Iconic_WDS_Gcal_Core_Settings {
 						licenses: licenses,
 						coupon: coupon,
 						hide_coupon: true,
-						trial: trial,
 						// You can consume the response for after purchase logic.
 						purchaseCompleted: function( response ) {
 							// The logic here will be executed immediately after the purchase confirmation.                                // alert(response.user.email);
@@ -748,19 +644,9 @@ class Iconic_WDS_Gcal_Core_Settings {
 		</script>
 
 		<div class="iconic-settings-sidebar">
-			<?php if ( $is_trial ) { ?>
-				<div class="iconic-settings-sidebar__widget iconic-settings-sidebar__widget--note">
-					<p>Hey <?php echo esc_html( $current_user->display_name ); ?>,</p>
-					<p>If you have any questions during your trial of <?php echo esc_html( self::$args['title'] ); ?>, we're more than happy to answer them.</p>
-					<a href="https://iconicwp.com/support/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=trial-cta" class="button button-primary" target="_blank">Get in touch</a>
-					<a href="<?php echo esc_attr( self::get_docs_url( 'collection' ) ); ?>?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=trial-cta" class="button button-secondary" target="_blank">View docs</a>
-					<p>Thanks, <br>James Kemp <br><em>Founder</em></p>
-				</div>
-			<?php } ?>
-
 			<?php if ( ! empty( $cross_sells ) ) { ?>
 				<div class="iconic-settings-sidebar__widget iconic-settings-sidebar__widget--works-well">
-					<h3>Works well with...</h3>
+					<h3><?php esc_html_e( 'Works well with...', '%textdomain' ); ?></h3>
 
 					<?php foreach ( $cross_sells as $cross_sell ) { ?>
 						<div class="iconic-product">
@@ -768,12 +654,16 @@ class Iconic_WDS_Gcal_Core_Settings {
 								<?php echo wp_kses_post( $cross_sell['product']['image'] ); ?>
 							</div>
 							<div class="iconic-product__content">
-								<h4 class="iconic-product__title"><a target="_blank" href="<?php echo esc_url( $cross_sell['link'] ); ?>?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=cross-sell" target="_blank"><?php echo wp_kses_post( $cross_sell['title']['rendered'] ); ?></a></h4>
+								<h4 class="iconic-product__title"><a target="_blank" href="<?php echo esc_url( $cross_sell['link'] ); ?>?utm_source=Iconic&utm_medium=Plugin&utm_campaign=iconic-wds-gcal&utm_content=cross-sell" target="_blank"><?php echo wp_kses_post( $cross_sell['title']['rendered'] ); ?></a></h4>
 								<p class="iconic-product__description"><?php echo wp_kses_post( $cross_sell['product']['description'] ); ?></p>
 								<?php if ( ! empty( $cross_sell['product']['freemius']['plugin_id'] ) ) { ?>
 									<div class="iconic-product__buttons">
-										<p><a href="https://checkout.freemius.com/mode/dialog/plugin/<?php echo esc_attr( $cross_sell['product']['freemius']['plugin_id'] ); ?>/plan/<?php echo esc_attr( $cross_sell['product']['freemius']['plan_id'] ); ?>/" class="button iconic-buy-now iconic-button iconic-button--small" data-plugin-id="<?php echo esc_attr( $cross_sell['product']['freemius']['plugin_id'] ); ?>" data-plan-id="<?php echo esc_attr( $cross_sell['product']['freemius']['plan_id'] ); ?>" data-public-key="<?php echo esc_attr( $cross_sell['product']['freemius']['public_key'] ); ?>" data-type="premium" data-title="<?php echo esc_attr( $cross_sell['title']['rendered'] ); ?>">Buy Plugin</a></p>
-										<p>or <a href="https://checkout.freemius.com/mode/dialog/plugin/<?php echo esc_attr( $cross_sell['product']['freemius']['plugin_id'] ); ?>/plan/<?php echo esc_attr( $cross_sell['product']['freemius']['plan_id'] ); ?>/?trial=paid" class="iconic-buy-now" data-plugin-id="<?php echo esc_attr( $cross_sell['product']['freemius']['plugin_id'] ); ?>" data-plan-id="<?php echo esc_attr( $cross_sell['product']['freemius']['plan_id'] ); ?>" data-public-key="<?php echo esc_attr( $cross_sell['product']['freemius']['public_key'] ); ?>" data-type="trial" data-title="<?php echo esc_attr( $cross_sell['title']['rendered'] ); ?>">start 14-day free trial</a></p>
+										<p>
+											<a href="https://checkout.freemius.com/mode/dialog/plugin/<?php echo esc_attr( $cross_sell['product']['freemius']['plugin_id'] ); ?>/plan/<?php echo esc_attr( $cross_sell['product']['freemius']['plan_id'] ); ?>/" class="button iconic-buy-now iconic-button iconic-button--small" data-plugin-id="<?php echo esc_attr( $cross_sell['product']['freemius']['plugin_id'] ); ?>" data-plan-id="<?php echo esc_attr( $cross_sell['product']['freemius']['plan_id'] ); ?>" data-public-key="<?php echo esc_attr( $cross_sell['product']['freemius']['public_key'] ); ?>" data-type="premium" data-title="<?php echo esc_attr( $cross_sell['title']['rendered'] ); ?>">
+												<?php esc_html_e( 'Buy Plugin', 'iconic-wds-gcal' ); ?>
+											</a>
+										</p>
+										<p><?php esc_html_e( '30 Day Money-Back Guarantee', 'iconic-wds-gcal' ); ?></p>
 									</div>
 								<?php } ?>
 							</div>
@@ -784,7 +674,7 @@ class Iconic_WDS_Gcal_Core_Settings {
 		</div>
 		<?php
 	}
-	
+
 	/**
 	 * Add version number to header.
 	 */
@@ -798,7 +688,7 @@ class Iconic_WDS_Gcal_Core_Settings {
 	 * @return string
 	 */
 	public static function support_link() {
-		return sprintf( '<a href="%s" class="button button-secondary" target="_blank">%s</a>', 'https://iconicwp.com/support/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=support-link', __( 'Submit Ticket', 'jckwds' ) );
+		return sprintf( '<a href="%s" class="button button-secondary" target="_blank">%s</a>', 'https://iconicwp.com/support/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=iconic-wds-gcal&utm_content=support-link', esc_html__( 'Submit Ticket', 'iconic-wds-gcal' ) );
 	}
 
 	/**
@@ -807,7 +697,7 @@ class Iconic_WDS_Gcal_Core_Settings {
 	 * @return string
 	 */
 	public static function documentation_link() {
-		return sprintf( '<a href="%s?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=documentation-link" class="button button-secondary" target="_blank">%s</a>', self::get_docs_url( 'collection' ), __( 'Read Documentation', 'jckwds' ) );
+		return sprintf( '<a href="%s?utm_source=Iconic&utm_medium=Plugin&utm_campaign=iconic-wds-gcal&utm_content=documentation-link" class="button button-secondary" target="_blank">%s</a>', self::get_docs_url( 'collection' ), esc_html__( 'Read Documentation', 'iconic-wds-gcal' ) );
 	}
 
 	/**
@@ -816,7 +706,7 @@ class Iconic_WDS_Gcal_Core_Settings {
 	 * @return string
 	 */
 	public static function account_link() {
-		return sprintf( '<a href="%s" class="button button-secondary" target="_blank">%s</a>', 'https://iconicwp.com/account/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=jckwds&utm_content=account-link', __( 'Manage Your Account', 'jckwds' ) );
+		return sprintf( '<a href="%s" class="button button-secondary" target="_blank">%s</a>', 'https://iconicwp.com/account/?utm_source=Iconic&utm_medium=Plugin&utm_campaign=iconic-wds-gcal&utm_content=account-link', esc_html__( 'Manage Your Account', 'iconic-wds-gcal' ) );
 	}
 
 	/**
@@ -830,4 +720,24 @@ class Iconic_WDS_Gcal_Core_Settings {
 		wp_enqueue_script( 'freemius-checkout', 'https://checkout.freemius.com/checkout.min.js', array(), '1', true );
 	}
 
+	/**
+	 * Add link to settings page.
+	 *
+	 * @param array $links Array of plugin links.
+	 *
+	 * @return array
+	 */
+	public static function plugin_action_links( $links ) {
+		if ( empty( self::$settings_framework->settings_page ) ) {
+			return $links;
+		}
+
+		$settings_path = sprintf( 'admin.php?page=%s', self::$settings_framework->settings_page['slug'] );
+
+		$action_links = array(
+			'settings' => '<a href="' . admin_url( $settings_path ) . '" aria-label="' . esc_attr__( 'View settings', 'iconic-wds-gcal' ) . '">' . esc_html__( 'Settings', 'iconic-wds-gcal' ) . '</a>',
+		);
+
+		return array_merge( $action_links, $links );
+	}
 }

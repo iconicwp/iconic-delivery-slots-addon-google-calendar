@@ -13,5 +13,8 @@ Fixes: #[Issue Number]
 **Video / Images:**
 > A supporting video demonstrating the changes (using a tool such as Loom) or images (be sure to include before and after shots if it relates to a visual change).
 
+**Documentation**
+> Provide guidance relating to the changes in this PR that can be used to update the documentation on the website.
+
 **Further Guidance**
-Guidance on how to complete this Pull Request can be found in the [workflow documentation](https://docs.google.com/document/d/1moNJzYNOvxSfztw1Ew6ztOCayDk67fQbQPkG-RNLhGI/edit).
+> Guidance on how to complete this Pull Request can be found in the [workflow documentation](https://docs.google.com/document/d/1moNJzYNOvxSfztw1Ew6ztOCayDk67fQbQPkG-RNLhGI/edit).

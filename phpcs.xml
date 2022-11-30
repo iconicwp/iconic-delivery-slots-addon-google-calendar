@@ -12,7 +12,7 @@
         <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
     </rule>
 
-    <rule ref="vendor/woocommerce/woocommerce-sniffs/src/WooCommerce-Core/ruleset.xml"/>
+    <rule ref="WooCommerce-Core"/>
     <rule ref="PHPCompatibility"/>
 
     <!-- Args -->
