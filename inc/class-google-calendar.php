@@ -377,8 +377,10 @@ class Iconic_WDS_Gcal_Google_Calendar {
 
 		// Get end timestamp.
 		if ( $db_row && $db_row->endtime && $db_row->starttime ) {
-			$diff_minute   = $db_row->endtime - $db_row->starttime;
-			$timestamp_end = $timestamp_end + ( $diff_minute * 60 );
+			$starttime     = DateTime::createFromFormat( 'Hi', $db_row->starttime, wp_timezone() );
+			$endtime       = DateTime::createFromFormat( 'Hi', $db_row->endtime, wp_timezone() );
+			$diff          = $endtime->getTimestamp() - $starttime->getTimestamp();
+			$timestamp_end = $timestamp_start + $diff;
 		}
 
 		$end = new Google_Service_Calendar_EventDateTime();
