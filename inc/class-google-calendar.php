@@ -61,12 +61,19 @@ class Iconic_WDS_Gcal_Google_Calendar {
 			$client->setAccessToken( $access_token );
 		}
 
-		// If the token has expired.
-		if ( $client->isAccessTokenExpired() && $client->getRefreshToken() ) {
-			$access_token = $client->fetchAccessTokenWithRefreshToken( $client->getRefreshToken() );
-			if ( ! isset( $access_token['error'] ) ) {
-				update_option( self::TOKEN_OPTION_KEY, $access_token );
+		try {
+			// If the token has expired.
+			if ( $client->isAccessTokenExpired() && $client->getRefreshToken() ) {
+				$access_token = $client->fetchAccessTokenWithRefreshToken( $client->getRefreshToken() );
+				if ( ! isset( $access_token['error'] ) ) {
+					update_option( self::TOKEN_OPTION_KEY, $access_token );
+				}
 			}
+		} catch ( Exception $e ) {
+			self::log( 'Couldnt refresh access token.' );
+			self::log( print_r( get_option( self::TOKEN_OPTION_KEY, false ), true ) );
+			self::log( $access_token, true );
+			self::log( $e->getMessage() );
 		}
 
 		return $client;
