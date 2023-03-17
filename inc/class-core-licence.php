@@ -174,8 +174,19 @@ class Iconic_WDS_Gcal_Core_Licence {
 				background: #fff;
 			}
 
-			body #fs_connect .fs-visual {
+			body .fs-header {
 				display: none;
+			}
+
+			body #fs_connect .fs-box-container {
+				background-color: #fff;
+				box-shadow: none;
+				padding-top: 0;
+				border-radius: 8px;
+			}
+
+			body #fs_connect.require-license-key .fs-content {
+				padding-bottom: 25px;
 			}
 
 			body #fs_connect .fs-content {
@@ -240,6 +251,11 @@ class Iconic_WDS_Gcal_Core_Licence {
 				line-height: 38px;
 				padding: 0 15px;
 				border-radius: 8px;
+			}
+
+			body #fs_connect a:not(.button) {
+				color: #2271b1;
+				text-decoration: none;
 			}
 		</style>
 		<div class="wpsf-settings">

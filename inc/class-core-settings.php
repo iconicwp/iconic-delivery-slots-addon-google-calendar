@@ -86,7 +86,6 @@ class Iconic_WDS_Gcal_Core_Settings {
 		add_action( 'init', array( __CLASS__, 'init' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'add_settings_page' ), 20 );
 		add_action( 'in_admin_header', array( __CLASS__, 'clean_notices' ), 9999 );
-		add_filter( 'woocommerce_allow_marketplace_suggestions', '__return_false' );
 		add_action( 'wpsf_after_tab_links_' . self::$args['option_group'], array( __CLASS__, 'add_sidebar' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'wpsf_after_title_' . self::$args['option_group'], array( __CLASS__, 'add_version' ) );
