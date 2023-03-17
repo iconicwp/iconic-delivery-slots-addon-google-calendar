@@ -29,7 +29,6 @@ function jckwds_gcal_settings( $wpsf_settings ) {
 		);
 	}
 
-	// @todo change this URL.
 	$document_url = 'https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/';
 
 	$gcal_fields = array(

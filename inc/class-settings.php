@@ -32,6 +32,12 @@ class Iconic_WDS_Gcal_Settings {
 		if ( $db_client_id !== $settings['integrations_google_api'] || $db_secret !== $settings['integrations_google_secret'] ) {
 			$settings['integrations_google_select_calendar'] = '';
 			delete_option( Iconic_WDS_Gcal_Google_Calendar::TOKEN_OPTION_KEY );
+
+			Iconic_WDS_Gcal_Google_Calendar::log( 'Client ID/Secret mismatch. Deleting the token.' );
+			Iconic_WDS_Gcal_Google_Calendar::log( '$db_client_id: ' . $db_client_id );
+			Iconic_WDS_Gcal_Google_Calendar::log( '$settings[integrations_google_api]: ' . $settings['integrations_google_api'] );
+			Iconic_WDS_Gcal_Google_Calendar::log( '$db_secret: ' . $db_secret );
+			Iconic_WDS_Gcal_Google_Calendar::log( '$settings[integrations_google_secret]: ' . $settings['integrations_google_secret'] );
 		}
 
 		return $settings;
