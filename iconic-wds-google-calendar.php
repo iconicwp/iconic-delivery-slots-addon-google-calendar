@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WooCommerce Delivery Slots by Iconic: Google Calendar Addon
+ * Plugin Name: Iconic Delivery Slots Google Calendar Addon
  * Plugin URI: https://iconicwp.com/products/woocommerce-delivery-slots/
  * Description: Adds Google Calendar integration to the WooCommerce Delivery Slots plugin.
  * Version: 0.1.0
