@@ -32,7 +32,7 @@ const deps = {
 registry(new CommonRegistry({
 	plugin_id: 1038.1,
 	plugin_name: 'WooCommerce Delivery Slots by Iconic: Google Calendar Addon',
-	plugin_filename: 'iconic-wds-google-calendar',
+	plugin_filename: 'iconic-delivery-slots-addon-google-calendar',
 	premium_suffix: false,
 	textdomain: 'iconic-wds-gcal',
 	is_envato_constant: false,
