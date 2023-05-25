@@ -1,5 +1,5 @@
-# Iconic Delivery Slots Google Calendar
-Contributors: iconicwp, promz
+# Iconic Delivery Slots: Addon for Google Calendar
+Contributors: iconicwp, jamesckemp, promz
 Tags: WooCommerce, Google calendar, calendar, sync, timeslots
 Requires at least: 5.2.0
 Tested up to:      6.2
