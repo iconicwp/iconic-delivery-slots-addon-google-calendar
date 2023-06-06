@@ -240,10 +240,9 @@ class Client
      * Helper wrapped around the OAuth 2.0 implementation.
      *
      * @param string $code code from accounts.google.com
-     * @param string $codeVerifier the code verifier used for PKCE (if applicable)
      * @return array access token
      */
-    public function fetchAccessTokenWithAuthCode($code, $codeVerifier = null)
+    public function fetchAccessTokenWithAuthCode($code)
     {
         if (strlen($code) == 0) {
             throw new InvalidArgumentException("Invalid code");
@@ -252,9 +251,6 @@ class Client
         $auth = $this->getOAuth2Service();
         $auth->setCode($code);
         $auth->setRedirectUri($this->getRedirectUri());
-        if ($codeVerifier) {
-            $auth->setCodeVerifier($codeVerifier);
-        }
 
         $httpHandler = HttpHandlerFactory::build($this->getHttpClient());
         $creds = $auth->fetchAuthToken($httpHandler);
