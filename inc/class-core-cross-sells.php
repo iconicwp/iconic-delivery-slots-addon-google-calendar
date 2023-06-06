@@ -94,7 +94,7 @@ class Iconic_WDS_Gcal_Core_Cross_Sells {
 	 * @return bool|stdClass
 	 */
 	public static function get_plugin() {
-		$class_name = 'Main_Class';
+		$class_name = '';
 		$plugins    = self::get_plugins();
 
 		if ( empty( $plugins ) ) {

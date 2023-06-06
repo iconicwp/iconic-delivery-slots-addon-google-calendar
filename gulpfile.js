@@ -36,7 +36,7 @@ registry(new CommonRegistry({
 	premium_suffix: false,
 	textdomain: 'iconic-wds-gcal',
 	is_envato_constant: false,
-	is_upload: true,
+	is_upload: false,
 	class_prefix: 'Iconic_WDS_Gcal_',
 	nolic: false,
 	deps: deps
