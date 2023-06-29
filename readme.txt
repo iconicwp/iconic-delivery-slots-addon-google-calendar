@@ -16,21 +16,21 @@ Stay organized, manage your delivery schedules efficiently, and never miss a del
 
 Connect your WooCommerce store to Google Calendar with this addon plugin and start syncing your delivery slots for a streamlined and efficient delivery management experience.
 
-## EFFORTLESSLY SYNC DELIVERY SLOTS WITH GOOGLE CALENDAR
+## Effortlessly sync Delivery slots with Google Calendar
 Easily sync your WooCommerce delivery slots (created using the Iconic WooCommerce Delivery Slots plugin) with your Google Calendar. Keep track of deliveries and streamline your order management process.
 
-## REAL-TIME UPDATES
+## Real-time updates
 This plugin offers real-time updates to your Google Calendar, ensuring that you always have the most current information about your delivery slots at your fingertips.
 
-## QUICK SETUP
+## Quick setup
 Setting up the Iconic Delivery Slots Google Calendar plugin is fast. Install the plugin, connect your Google Account, and start syncing your delivery slots right away.
 
-## COMPREHENSIVE DOCUMENTATION
+## Comprehensive documentation
 For a detailed guide on how to set up the Iconic Delivery Slots Google Calendar plugin, please refer to our documentation: https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/ 
 
 This resource will walk you through the setup process, ensuring a smooth integration with your WooCommerce store.
 
-## FAST SUPPORT
+## Fast support
 If you face any issues while using the Iconic Delivery Slots Google Calendar plugin, our dedicated support team will be on hand to help. We prioritize customer satisfaction and are always here to assist you.
 
 
@@ -67,5 +67,5 @@ Yes, we ensure that all data transferred between your WooCommerce store and your
 Currently, the plugin supports syncing to a single Google Calendar. However, we are continuously working on improving our plugin and adding new features based on user feedback.
 
 ## What should I do if I encounter issues with the plugin?
-If you encounter any issues with the plugin, please contact our support team. We’re here to help.
+If you encounter any issues with the plugin, please contact our [support team](https://iconicwp.com/support/). We’re here to help.
 
