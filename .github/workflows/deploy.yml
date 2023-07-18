@@ -1,0 +1,83 @@
+name: Deploy to WordPress.org
+on:
+  push:
+    tags:
+      - "*"
+jobs:
+  before_release:
+    runs-on: ubuntu-latest
+    steps:
+      # Assign SSH key for private repos on github.
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - run: git config --global user.email "iconibot@jckemp.com"
+      - run: git config --global user.name "Iconibot"
+
+      # Setup npm.
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14' # Gulp 3 only works with 10 or lower.
+
+      # Checkout git.
+      - uses: actions/checkout@v2
+        with:
+          ref: dev
+          fetch-depth: 0 # fetch all history.
+
+      # Install NPM.
+      - run: npm install
+
+      # Update POT.
+      - run: gulp pot
+      - run: git add -A
+      - run: git commit -m "Update POT" || echo "No changes to commit"
+      - run: git push origin dev
+
+      # Document hooks and filter.
+      - run: composer install
+      - run: mkdir -p docs
+      - run: vendor/wp-hooks/generator/bin/wp-hooks-generator --input=./ --output=docs --ignore-files="vendor/,node_modules,tasks,dist,hooks,languages,inc/vendor"
+      - run: git add -A
+      - run: git commit -m "updated hooks and filters" || echo "No changes to commit"
+
+      # Merge into master.
+      - run: git checkout master
+      - run: git merge dev --no-ff -m "[automated-release] Merge dev into master"
+
+      # Update repo.
+      - run: git push origin master && git push origin dev
+
+      # Checkout config file here so we don't commit it earlier on.
+      # Needed for uplaod to demo site.
+      - uses: actions/checkout@v2
+        with:
+          ref: main # checkout dev branch.
+          repository: iconicwp/workflow-config
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          path: deploy-config
+
+
+  push_to_wporg:
+    name: New tag
+    runs-on: ubuntu-latest
+    needs: [before_release]
+    steps:
+      - uses: actions/checkout@master
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+
+      # Notify Slack
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: '#30B887'
+          SLACK_TITLE: '${{ secrets.PLUGIN_NAME }}: ${{ github.event.release.tag_name }} released!'
+          SLACK_MESSAGE: 'See what has changed: ${{ secrets.PLUGIN_URL }}/#developers'
+          SLACK_USERNAME: 'New Release'
+          SLACK_ICON_EMOJI: ':rocket:'

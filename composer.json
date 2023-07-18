@@ -18,7 +18,8 @@
     },
 	"require-dev": {
 		"iconicwp/iconic-core": "dev-master",
-		"iconicwp/workflows": "dev-master"
+		"iconicwp/workflows": "dev-master",
+		"wp-hooks/generator": "dev-master"
 	  },
 	"scripts": {
 		"pre-autoload-dump": "Google\\Task\\Composer::cleanup"
@@ -31,6 +32,24 @@
 	"config": {
 		"platform": {
 			"php": "7.0.0"
-		 }
+		},
+		 "allow-plugins": {
+			"composer/*": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"erusev/parsedown": true,
+			"freemius/*": true,
+			"gamajo/template-loader": true,  
+			"iconicwp/*": true,
+			"johnbillion/*": true,
+			"nikic/php-parser": true,
+			"phpcompatibility/*": true,
+			"phpdocumentor/*": true,
+			"psr/log": true,
+			"squizlabs/*": true,
+			"woocommerce/*": true,
+			"wp-coding-standards/*": true,
+			"wp-hooks/*": true,
+			"composer/installers": true
+		}
 	}
 }
