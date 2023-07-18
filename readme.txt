@@ -10,7 +10,7 @@ Requires PHP: 5.6
 
 == Description ==
 
-**Note: This plugin requires the [Iconic WooCommerce Delivery Slots plugin](https://iconicwp.com/products/woocommerce-delivery-slots/) and a Google Account with Google Calendar access.**
+**Note: This plugin requires the [Iconic WooCommerce Delivery Slots plugin](https://iconicwp.com/products/woocommerce-delivery-slots/?utm_source=Iconic&utm_medium=Readme&utm_campaign=wds-gcal) and a Google Account with Google Calendar access.**
 
 Iconic Delivery Slots Google Calendar is an addon plugin for the Iconic WooCommerce Delivery Slots plugin that allows you to sync your delivery slots with a Google Calendar seamlessly. 
 
@@ -28,7 +28,7 @@ This plugin offers real-time updates to your Google Calendar, ensuring that you 
 Setting up the Iconic Delivery Slots Google Calendar plugin is fast. Install the plugin, connect your Google Account, and start syncing your delivery slots right away.
 
 ## Comprehensive documentation
-For a detailed guide on how to set up the Iconic Delivery Slots Google Calendar plugin, please refer to our documentation: https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/ 
+For a detailed guide on how to set up the Iconic Delivery Slots Google Calendar plugin, please refer to our documentation: https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/?utm_source=Iconic&utm_medium=Readme&utm_campaign=wds-gcal
 
 This resource will walk you through the setup process, ensuring a smooth integration with your WooCommerce store.
 
@@ -37,7 +37,7 @@ If you face any issues while using the Iconic Delivery Slots Google Calendar plu
 
 
 # Documentation
-For information on how to use the Google Calendar addon plugin, please refer to [this documentation.](https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/)
+For information on how to use the Google Calendar addon plugin, please refer to [this documentation.](https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/?utm_source=Iconic&utm_medium=Readme&utm_campaign=wds-gcal)
 
 == Installation ==
 1. Upload the Orderable zip via the \'Plugins\' menu in WordPress, or upload the Orderable folder to the /wp-content/plugins/ directory.
@@ -52,16 +52,16 @@ For information on how to use the Google Calendar addon plugin, please refer to 
 == Frequently Asked Questions ==
 
 = What is the WooCommerce Delivery Slots Google Calendar Sync plugin? =
-The WooCommerce Delivery Slots Google Calendar Sync is a free add-on for the premium [WooCommerce Delivery Slots](https://iconicwp.com/products/woocommerce-delivery-slots/) plugin. It allows you to sync your delivery slots directly to your Google Calendar.
+The WooCommerce Delivery Slots Google Calendar Sync is a free add-on for the premium [WooCommerce Delivery Slots](https://iconicwp.com/products/woocommerce-delivery-slots/?utm_source=Iconic&utm_medium=Readme&utm_campaign=wds-gcal) plugin. It allows you to sync your delivery slots directly to your Google Calendar.
 
 = Do I need to pay for this add-on? =
-No, this add-on is completely free. However, it requires the paid [WooCommerce Delivery Slots](https://iconicwp.com/products/woocommerce-delivery-slots/) plugin to function.
+No, this add-on is completely free. However, it requires the paid [WooCommerce Delivery Slots](https://iconicwp.com/products/woocommerce-delivery-slots/?utm_source=Iconic&utm_medium=Readme&utm_campaign=wds-gcal) plugin to function.
 
 = How do I install the WooCommerce Delivery Slots Google Calendar Sync plugin? =
 The add-on can be installed like any other WordPress plugin. Once installed, you’ll need to configure it to work with your Google Calendar. This involves setting up API keys.
 
 = What are API keys and how do I set them up? =
-API keys are unique identifiers that authenticate the interaction between two software. In this case, the interaction is between our plugin and your Google Calendar. You can find the instructions on how to set up your API keys in [our documentation](https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/).
+API keys are unique identifiers that authenticate the interaction between two software. In this case, the interaction is between our plugin and your Google Calendar. You can find the instructions on how to set up your API keys in [our documentation](https://iconicwp.com/docs/woocommerce-delivery-slots/how-to-integrate-google-calendar-with-iconic-delivery-slots/?utm_source=Iconic&utm_medium=Readme&utm_campaign=wds-gcal).
 
 = What happens if I don’t have the WooCommerce Delivery Slots plugin? =
 Without the WooCommerce Delivery Slots plugin, the Google Calendar Sync add-on will not work. The add-on extends the functionality of the WooCommerce Delivery Slots plugin and is dependent on it.
@@ -79,7 +79,7 @@ Yes, we ensure that all data transferred between your WooCommerce store and your
 Currently, the plugin supports syncing to a single Google Calendar. However, we are continuously working on improving our plugin and adding new features based on user feedback.
 
 = What should I do if I encounter issues with the plugin? =
-If you encounter any issues with the plugin, please contact our [support team](https://iconicwp.com/support/). We’re here to help.
+If you encounter any issues with the plugin, please contact our [support team](https://iconicwp.com/support/?type=Technical%20Issues&products=180&utm_source=Iconic&utm_medium=Readme&utm_campaign=wds-gcal). We’re here to help.
 
 == Changelog ==
 
