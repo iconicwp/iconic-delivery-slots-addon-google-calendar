@@ -300,7 +300,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 	 */
 	public static function create_event( $order ) {
 		$calendar_id = self::get_calendar_id();
-		$timestmap   = $order->get_meta( '_jckwds_timestamp' );
+		$timestmap   = $order->get_meta( 'jckwds_timestamp' );
 
 		if ( empty( $calendar_id ) || empty( $timestmap ) ) {
 			return false;
@@ -337,7 +337,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 	 */
 	public static function edit_event( $event_id, $order ) {
 		$calendar_id = self::get_calendar_id();
-		$timestmap   = $order->get_meta( '_jckwds_timestamp' );
+		$timestmap   = $order->get_meta( 'jckwds_timestamp' );
 
 		if ( empty( $calendar_id ) || empty( $timestmap ) || empty( $event_id ) ) {
 			return false;
@@ -373,7 +373,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		global $iconic_wds;
 
 		$calendar_id     = self::get_calendar_id();
-		$timestamp_start = $order->get_meta( '_jckwds_timestamp' );
+		$timestamp_start = $order->get_meta( 'jckwds_timestamp' );
 		$timestamp_end   = $timestamp_start;
 		$db_row          = Iconic_WDS_Reservations::get_reservation_for_order( $order->get_id() );
 
@@ -505,7 +505,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$string = str_replace( '{SITE_NAME}', get_bloginfo( 'name' ), $string );
 		$string = str_replace( '{ORDER_NUMBER}', $order->get_order_number(), $string );
 		$string = str_replace( '{ORDER_DATE_TIME}', $order->get_date_created()->format( 'Y-m-d H:i:s' ), $string );
-		$string = str_replace( '{DELIVERY_DATE_TIME}', $order->get_meta( '_jckwds_date' ) . ' ' . $order->get_meta( '_jckwds_timeslot' ), $string );
+		$string = str_replace( '{DELIVERY_DATE_TIME}', $order->get_meta( 'jckwds_date' ) . ' ' . $order->get_meta( 'jckwds_timeslot' ), $string );
 		$string = str_replace( '{CUSTOMER_NAME}', $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(), $string );
 		$string = str_replace( '{CUSTOMER_EMAIL}', $order->get_billing_email(), $string );
 		$string = str_replace( '{CUSTOMER_ADDRESS}', wp_strip_all_tags( str_replace( '<br/>', "\n", $order->get_formatted_billing_address() ) ), $string );
