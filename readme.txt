@@ -3,7 +3,7 @@ Contributors: iconicwp, jamesckemp, promz
 Tags: WooCommerce, Google calendar, calendar, sync, timeslots, WooCommerce delivery slots
 Requires at least: 5.2.0
 Tested up to: 6.2
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 5.6
@@ -82,6 +82,9 @@ Currently, the plugin supports syncing to a single Google Calendar. However, we 
 If you encounter any issues with the plugin, please contact our [support team](https://iconicwp.com/support/?type=Technical%20Issues&products=180&utm_source=Iconic&utm_medium=Readme&utm_campaign=wds-gcal). We’re here to help.
 
 == Changelog ==
+
+**v1.0.1** (28 Mar 2024)
+Update meta keys to reflect recent WDS meta key migration.
 
 **v1.0.0** (29 Jun 2023)
 Initial Release
