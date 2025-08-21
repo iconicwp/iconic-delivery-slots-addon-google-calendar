@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Iconic_WDS\Iconic_WDS;
+use Iconic_WDS\Reservations;
+
 /**
  * WDS Google Calendar Integration.
  */
@@ -30,8 +33,8 @@ class Iconic_WDS_Gcal_Google_Calendar {
 	 * Run.
 	 */
 	public static function run() {
-		add_action( 'init', array( __CLASS__, 'authenticate' ), 11 );
-		add_action( 'init', array( __CLASS__, 'disconnect' ), 11 );
+		add_action( 'wp_loaded', array( __CLASS__, 'authenticate' ), 11 );
+		add_action( 'wp_loaded', array( __CLASS__, 'disconnect' ), 11 );
 		add_action( 'woocommerce_order_status_changed', array( __CLASS__, 'order_status_changed' ), 10, 3 );
 		add_action( 'save_post', array( __CLASS__, 'timeslot_changed' ), 20, 3 );
 		add_action( 'deleted_post', array( __CLASS__, 'delete_event_on_order_deleted' ), 10, 1 );
@@ -375,7 +378,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$calendar_id     = self::get_calendar_id();
 		$timestamp_start = $order->get_meta( 'jckwds_timestamp' );
 		$timestamp_end   = $timestamp_start;
-		$db_row          = Iconic_WDS_Reservations::get_reservation_for_order( $order->get_id() );
+		$db_row          = Reservations::get_reservation_for_order( $order->get_id() );
 
 		$summary     = self::replace_placeholders( $iconic_wds->settings['integrations_google_setting_event_title'], $order, 'summary' );
 		$description = self::replace_placeholders( $iconic_wds->settings['integrations_google_setting_event_description'], $order, 'description' );

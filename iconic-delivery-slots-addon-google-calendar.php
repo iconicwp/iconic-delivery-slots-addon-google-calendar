@@ -58,7 +58,7 @@ class Iconic_WDS_Gcal {
 	 * Plugins loaded.
 	 */
 	public function plugins_loaded() {
-		if ( ! class_exists( 'Iconic_WDS' ) ) {
+		if ( ! class_exists( 'Iconic_WDS\Iconic_WDS' ) ) {
 			add_action( 'admin_notices', array( $this, 'show_wds_core_missing_notice' ) );
 			return;
 		}
