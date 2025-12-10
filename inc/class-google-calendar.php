@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Iconic_WDS\Iconic_WDS;
 use Iconic_WDS\Reservations;
 
 /**
@@ -386,8 +387,15 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$summary     = self::replace_placeholders( $iconic_wds->settings['integrations_google_setting_event_title'], $order, 'summary' );
 		$description = self::replace_placeholders( $iconic_wds->settings['integrations_google_setting_event_description'], $order, 'description' );
 
+		/**
+		 * Event location after placeholders have been replaced.
+		 *
+		 * @since 1.0.2
+		 */
+		$location = apply_filters( 'iconic_wds_gcal_event_location', wp_strip_all_tags( str_replace( '<br/>', "\n", $order->get_formatted_shipping_address() ) ), $order, $event );
+
 		$event->setSummary( $summary );
-		$event->setLocation( wp_strip_all_tags( str_replace( '<br/>', "\n", $order->get_formatted_shipping_address() ) ) );
+		$event->setLocation( $location );
 		$event->setDescription( $description );
 
 		$start = new Google_Service_Calendar_EventDateTime();
