@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Iconic_WDS\Iconic_WDS;
 use Iconic_WDS\Reservations;
+use Iconic_WDS\EditTimeslots;
 
 /**
  * WDS Google Calendar Integration.
@@ -59,7 +60,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$client->addScope( Google\Service\Calendar::CALENDAR_EVENTS );
 		$client->addScope( Google\Service\Calendar::CALENDAR_READONLY );
 		$client->setIncludeGrantedScopes( true );
-		$client->setApprovalPrompt( 'force' );
+		$client->setPrompt( 'consent' );
 
 		$access_token = get_option( self::TOKEN_OPTION_KEY, false );
 
@@ -72,6 +73,10 @@ class Iconic_WDS_Gcal_Google_Calendar {
 			if ( $client->isAccessTokenExpired() && $client->getRefreshToken() ) {
 				$access_token = $client->fetchAccessTokenWithRefreshToken( $client->getRefreshToken() );
 				if ( ! isset( $access_token['error'] ) ) {
+					if ( ! isset( $access_token['refresh_token'] ) ) {
+						$access_token['refresh_token'] = $client->getRefreshToken();
+					}
+
 					update_option( self::TOKEN_OPTION_KEY, $access_token );
 					self::log( 'Token refreshed' );
 					self::log( print_r( $access_token, true ) );
@@ -277,13 +282,20 @@ class Iconic_WDS_Gcal_Google_Calendar {
 	/**
 	 * Create/Update event to Google Calendar.
 	 *
-	 * @param int $order Order ID.
+	 * @param WC_Order $order Order.
 	 *
 	 * @return string|bool
 	 */
 	public static function update_event( $order ) {
 		if ( ! $order ) {
 			return false;
+		}
+
+		static $order_ids_cache = array();
+
+		// prevent multiple calls to the same order.
+		if ( isset( $order_ids_cache[ $order->get_id() ] ) ) {
+			return $order_ids_cache[$order->get_id()];
 		}
 
 		$event_id = $order->get_meta( self::CALENDAR_ID_META_KEY );
@@ -293,6 +305,8 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		} else {
 			self::edit_event( $event_id, $order );
 		}
+
+		$order_ids_cache[ $order->get_id() ] = $event_id;
 
 		return $event_id;
 	}
@@ -581,5 +595,4 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$logger = wc_get_logger();
 		$logger->info( $message, array( 'source' => 'iconic-wds-gcal' ) );
 	}
-
 }
