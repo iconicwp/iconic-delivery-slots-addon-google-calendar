@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Iconic_WDS\Iconic_WDS;
 use Iconic_WDS\Reservations;
+use Iconic_WDS\EditTimeslots;
 
 /**
  * WDS Google Calendar Integration.
@@ -37,7 +38,10 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		add_action( 'wp_loaded', array( __CLASS__, 'disconnect' ), 11 );
 		add_action( 'woocommerce_order_status_changed', array( __CLASS__, 'order_status_changed' ), 10, 3 );
 		add_action( 'save_post', array( __CLASS__, 'timeslot_changed' ), 20, 3 );
+		add_action( 'woocommerce_update_order', array( __CLASS__, 'timeslot_changed_hpos' ), 10, 1 );
 		add_action( 'deleted_post', array( __CLASS__, 'delete_event_on_order_deleted' ), 10, 1 );
+		add_action( 'woocommerce_delete_order', array( __CLASS__, 'delete_event_on_order_deleted' ), 10, 1 );
+		add_action( 'woocommerce_trash_order', array( __CLASS__, 'delete_event_on_order_deleted' ), 10, 1 );
 	}
 
 	/**
@@ -56,7 +60,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$client->addScope( Google\Service\Calendar::CALENDAR_EVENTS );
 		$client->addScope( Google\Service\Calendar::CALENDAR_READONLY );
 		$client->setIncludeGrantedScopes( true );
-		$client->setApprovalPrompt( 'force' );
+		$client->setPrompt( 'consent' );
 
 		$access_token = get_option( self::TOKEN_OPTION_KEY, false );
 
@@ -69,6 +73,10 @@ class Iconic_WDS_Gcal_Google_Calendar {
 			if ( $client->isAccessTokenExpired() && $client->getRefreshToken() ) {
 				$access_token = $client->fetchAccessTokenWithRefreshToken( $client->getRefreshToken() );
 				if ( ! isset( $access_token['error'] ) ) {
+					if ( ! isset( $access_token['refresh_token'] ) ) {
+						$access_token['refresh_token'] = $client->getRefreshToken();
+					}
+
 					update_option( self::TOKEN_OPTION_KEY, $access_token );
 					self::log( 'Token refreshed' );
 					self::log( print_r( $access_token, true ) );
@@ -274,7 +282,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 	/**
 	 * Create/Update event to Google Calendar.
 	 *
-	 * @param int $order Order ID.
+	 * @param WC_Order $order Order.
 	 *
 	 * @return string|bool
 	 */
@@ -283,13 +291,22 @@ class Iconic_WDS_Gcal_Google_Calendar {
 			return false;
 		}
 
-		$event_id = get_post_meta( $order->get_id(), self::CALENDAR_ID_META_KEY, true );
+		static $order_ids_cache = array();
+
+		// prevent multiple calls to the same order.
+		if ( isset( $order_ids_cache[ $order->get_id() ] ) ) {
+			return $order_ids_cache[$order->get_id()];
+		}
+
+		$event_id = $order->get_meta( self::CALENDAR_ID_META_KEY );
 
 		if ( empty( $event_id ) ) {
 			self::create_event( $order );
 		} else {
 			self::edit_event( $event_id, $order );
 		}
+
+		$order_ids_cache[ $order->get_id() ] = $event_id;
 
 		return $event_id;
 	}
@@ -319,7 +336,8 @@ class Iconic_WDS_Gcal_Google_Calendar {
 			$event = $service->events->insert( $calendar_id, $event );
 
 			if ( $event ) {
-				update_post_meta( $order->get_id(), self::CALENDAR_ID_META_KEY, $event->getId() );
+				$order->update_meta_data( self::CALENDAR_ID_META_KEY, $event->getId() );
+				$order->save();
 			}
 
 			return $event->getId();
@@ -446,6 +464,29 @@ class Iconic_WDS_Gcal_Google_Calendar {
 	}
 
 	/**
+	 * Update event if timeslot has changed (HPOS).
+	 *
+	 * @param int $order_id Order ID.
+	 *
+	 * @return void
+	 */
+	public static function timeslot_changed_hpos( $order_id ) {
+		$date_changed = filter_input( INPUT_POST, 'jckwds-date-changed' );
+
+		if ( empty( $order_id ) || empty( $date_changed ) ) {
+			return;
+		}
+
+		$order = wc_get_order( $order_id );
+
+		if ( ! $order ) {
+			return;
+		}
+
+		self::update_event( $order );
+	}
+
+	/**
 	 * Get calendar ID.
 	 * Call this function after settings have been initialized (init hook, priority 10).
 	 *
@@ -476,7 +517,8 @@ class Iconic_WDS_Gcal_Google_Calendar {
 
 		$service->events->delete( $calendar_id, $event_id );
 
-		delete_post_meta( $order->get_id(), self::CALENDAR_ID_META_KEY );
+		$order->delete_meta_data( self::CALENDAR_ID_META_KEY );
+		$order->save();
 	}
 
 	/**
@@ -489,7 +531,7 @@ class Iconic_WDS_Gcal_Google_Calendar {
 	public static function delete_event_on_order_deleted( $order_id ) {
 		$post_type = get_post_type( $order_id );
 
-		if ( 'shop_order' !== $post_type && 'shop_order_refund' !== $post_type ) {
+		if ( $post_type && 'shop_order' !== $post_type && 'shop_order_refund' !== $post_type ) {
 			return;
 		}
 
@@ -553,5 +595,4 @@ class Iconic_WDS_Gcal_Google_Calendar {
 		$logger = wc_get_logger();
 		$logger->info( $message, array( 'source' => 'iconic-wds-gcal' ) );
 	}
-
 }
