@@ -30,13 +30,14 @@ jobs:
           tools: composer
 
       - name: Composer Install
-        run: composer install --no-dev --no-progress --no-interaction # Install from composer.json, not dev files.
+        run: composer install --no-dev --no-progress --no-interaction --ignore-platform-reqs # Install from composer.json, not dev files.
       
       - name: PHPCS Code Review
         uses: rtCamp/action-phpcs-code-review@v2
         env:
           GH_BOT_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
           PHPCS_FILE_PATH: vendor/bin/phpcs
+          SKIP_FOLDERS: ".github,dev-lib,node_modules,/vendor,/vendor-prefixed,/assets/frontend/js,/assets/admin/js,stubs"
           
       - name: Project Automation
         uses: alex-page/github-project-automation-plus@v0.8.1

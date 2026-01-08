@@ -4,6 +4,9 @@ about: Use when reporting a problem with a project.
 labels: ["Size: Small", "Type: Bug"]
 
 ---
+> [!IMPORTANT]  
+> Please tag this issue as either `Bug: Internal` or `Bug: External` as appropriate.
+
 **Source**
 > Who reported the bug? How was it reported? Help Scout / Meeting / Self Report?
 
