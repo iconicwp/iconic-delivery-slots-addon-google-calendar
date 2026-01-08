@@ -86,6 +86,7 @@ class Iconic_WDS_Gcal_Core_Autoloader {
 
 		// Include found file.
 		if ( file_exists( $file ) ) {
+			// nosemgrep: audit.php.lang.security.file.inclusion-arg
 			require $file;
 
 			return;

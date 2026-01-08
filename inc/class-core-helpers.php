@@ -151,4 +151,13 @@ class Iconic_WDS_Gcal_Core_Helpers {
 
 		return $plugins;
 	}
+
+	/**
+	 * Get WooCommerce accounting script handle.
+	 *
+	 * @return bool
+	 */
+	public static function get_accounting_script_handle() {
+		return version_compare( WC_VERSION, '10.3', '<' ) ? 'accounting' : 'wc-accounting';
+	}
 }

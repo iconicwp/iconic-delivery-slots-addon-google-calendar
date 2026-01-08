@@ -1,4 +1,105 @@
 {
-    "$schema": "https://raw.githubusercontent.com/wp-hooks/generator/0.9.0/schema.json",
-    "hooks": []
+    "$schema": "https://raw.githubusercontent.com/wp-hooks/generator/1.0.1/schema.json",
+    "hooks": [
+        {
+            "name": "iconic_api_local_endpoint",
+            "file": "./inc/class-core-cross-sells.php",
+            "type": "filter",
+            "doc": {
+                "description": "Enable/Disable using the local API endpoint, rather than the remote.",
+                "long_description": "",
+                "tags": [],
+                "long_description_html": ""
+            },
+            "args": 1
+        },
+        {
+            "name": "iconic_wds_gcal_event_location",
+            "file": "./inc/class-google-calendar.php",
+            "type": "filter",
+            "doc": {
+                "description": "Event location after placeholders have been replaced.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "1.0.2"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 3
+        },
+        {
+            "name": "iconic_wds_gcal_replace_placeholder",
+            "file": "./inc/class-google-calendar.php",
+            "type": "filter",
+            "doc": {
+                "description": "Event description after placeholders have been replaced.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "0.1.0."
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 3
+        },
+        {
+            "name": "self::$args['option_group'] . '_settings_page_capability'",
+            "file": "./inc/class-core-settings.php",
+            "type": "filter",
+            "doc": {
+                "description": "Filter settings page capability.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Capability.",
+                        "types": [
+                            "string"
+                        ],
+                        "variable": "$capability"
+                    },
+                    {
+                        "name": "return",
+                        "content": ""
+                    },
+                    {
+                        "name": "since",
+                        "content": "1.0.6"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 1
+        },
+        {
+            "name": "self::get_plugin_slug() . '_skip_core_cross_sells_selected_plugins'",
+            "file": "./inc/class-core-cross-sells.php",
+            "type": "filter",
+            "doc": {
+                "description": "Filter whether cross sells plugins should be skipped.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "hook",
+                        "content": "{plugin-slug}_skip_core_cross_sells_selected_plugins"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Whether skip cross sells plugins. Default: false.",
+                        "types": [
+                            "bool"
+                        ],
+                        "variable": "$skip_selected_plugins"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 1
+        }
+    ]
 }

@@ -2,6 +2,7 @@ on:
   pull_request:
     branches:
       - dev
+      - release/**
     types: [closed]
 
 jobs:
@@ -13,7 +14,7 @@ jobs:
       # Checkout git.
       - uses: actions/checkout@v2
         with:
-          ref: dev # checkout dev branch.
+          ref: ${{ github.base_ref }}
           fetch-depth: 0 # fetch all history.
 
       - run: git config --global user.email "iconibot@jckemp.com"
@@ -37,4 +38,4 @@ jobs:
       # Commit changes.
       - run: git add changelog-dev.md
       - run: git commit -m "Update Changelog" || echo "No changes to commit"
-      - run: git push origin dev
+      - run: git push origin ${{ github.base_ref }}

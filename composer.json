@@ -19,7 +19,7 @@
 	"require-dev": {
 		"iconicwp/iconic-core": "dev-master",
 		"iconicwp/workflows": "dev-master",
-		"wp-hooks/generator": "dev-master"
+		"wp-hooks/generator": "dev-trunk"
 	  },
 	"scripts": {
 		"pre-autoload-dump": "Google\\Task\\Composer::cleanup"
@@ -31,7 +31,7 @@
 	},
 	"config": {
 		"platform": {
-			"php": "7.0.0"
+			"php": "8.3.0"
 		},
 		 "allow-plugins": {
 			"composer/*": true,
@@ -51,5 +51,6 @@
 			"wp-hooks/*": true,
 			"composer/installers": true
 		}
-	}
+	},
+	"minimum-stability": "dev"
 }

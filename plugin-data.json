@@ -1,7 +1,7 @@
 {
   "version": "1.0.1",
-  "wp": "6.2",
-  "woo": "7.7.0",
+  "wp": "6.9",
+  "woo": "10.4.3",
   "woo_requires": "2.6.14",
   "wp_requires": "4.8",
   "last_updated": "01 Jan 2022",
