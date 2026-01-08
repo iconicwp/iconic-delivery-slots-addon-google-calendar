@@ -1,4 +1,64 @@
 {
-    "$schema": "https://raw.githubusercontent.com/wp-hooks/generator/0.9.0/schema.json",
-    "hooks": []
+    "$schema": "https://raw.githubusercontent.com/wp-hooks/generator/1.0.1/schema.json",
+    "hooks": [
+        {
+            "name": "'admin_menu_' . self::$args['option_group']",
+            "file": "./inc/class-core-settings.php",
+            "type": "action",
+            "doc": {
+                "description": "Do admin menu action for option group.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "1.0.6"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 0
+        },
+        {
+            "name": "self::get_plugin_slug() . '_core_cross_sells_after_products'",
+            "file": "./inc/class-core-settings.php",
+            "type": "action",
+            "doc": {
+                "description": "Fires after the cross sells products.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Cross sells.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$cross_sells"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 1
+        },
+        {
+            "name": "self::get_plugin_slug() . '_core_cross_sells_before_products'",
+            "file": "./inc/class-core-settings.php",
+            "type": "action",
+            "doc": {
+                "description": "Fires before the cross sells products.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "param",
+                        "content": "Cross sells.",
+                        "types": [
+                            "array"
+                        ],
+                        "variable": "$cross_sells"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 1
+        }
+    ]
 }
