@@ -83,6 +83,10 @@ If you encounter any issues with the plugin, please contact our [support team](h
 
 == Changelog ==
 
+**v1.0.2** (08 Jan 2026)
+[update] Add filter to modify the location  
+[fix] Compatibility issues with WDS version 2.8.0  
+
 **v1.0.1** (28 Mar 2024)
 Update meta keys to reflect recent WDS meta key migration.
 
