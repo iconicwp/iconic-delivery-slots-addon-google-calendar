@@ -28,3 +28,5 @@ tmp/
 /nbproject/private/
 .vscode
 /dist/
+.eslintcache
+.stylelintcache

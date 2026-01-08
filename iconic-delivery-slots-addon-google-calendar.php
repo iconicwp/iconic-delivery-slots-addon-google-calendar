@@ -18,6 +18,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use Automattic\WooCommerce\Utilities\OrderUtil;
+
 /**
  * Main class.
  *
@@ -52,6 +54,31 @@ class Iconic_WDS_Gcal {
 		$this->define_constants();
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+		add_action( 'before_woocommerce_init', array( $this, 'declare_hpos_compatibility' ) );
+	}
+
+	/**
+	 * Declare HPOS compatibility.
+	 */
+	public function declare_hpos_compatibility() {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	}
+
+	/**
+	 * Check if Custom Order Tables are enabled.
+	 *
+	 * @return bool
+	 */
+	public static function is_cot_enabled() {
+		if ( version_compare( WC_VERSION, '7.1', '<' ) ) {
+			// Old version.
+			return false;
+		} else {
+			// Newer version.
+			return OrderUtil::custom_orders_table_usage_is_enabled();
+		}
 	}
 
 	/**
