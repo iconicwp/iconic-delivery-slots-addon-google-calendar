@@ -3,7 +3,7 @@ Contributors: iconicwp, jamesckemp, promz
 Tags: WooCommerce, Google calendar, calendar, sync, timeslots, WooCommerce delivery slots
 Requires at least: 5.2.0
 Tested up to: 6.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 5.6
