@@ -14,7 +14,8 @@
 		}
 	],
     "require": {
-        "google/apiclient": "^2.12.1"
+        "google/apiclient": "^2.12.1",
+        "monolog/monolog": "^2.9"
     },
 	"require-dev": {
 		"iconicwp/iconic-core": "dev-master",

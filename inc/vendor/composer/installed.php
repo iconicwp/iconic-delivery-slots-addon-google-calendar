@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'c1949247d9310ef1d091855970f7e70ab33d9bdc',
+        'reference' => '2fe246d79f90439295ae2acdb89341f7878a5737',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'c1949247d9310ef1d091855970f7e70ab33d9bdc',
+            'reference' => '2fe246d79f90439295ae2acdb89341f7878a5737',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -131,14 +131,12 @@
             ),
         ),
         'monolog/monolog' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'b321dd6749f0bf7189444158a3ce785cc16d69b0',
+            'pretty_version' => '2.x-dev',
+            'version' => '2.9999999.9999999.9999999-dev',
+            'reference' => '37308608e599f34a1a4845b16440047ec98a172a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
-            'aliases' => array(
-                0 => '3.x-dev',
-            ),
+            'aliases' => array(),
             'dev_requirement' => false,
         ),
         'nikic/php-parser' => array(
@@ -289,7 +287,7 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
             ),
         ),
         'ralouphie/getallheaders' => array(
